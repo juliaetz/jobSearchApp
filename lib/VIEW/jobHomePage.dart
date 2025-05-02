@@ -112,7 +112,7 @@ class JobHomePage extends StatelessWidget{
             Padding(
               padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
               child: Text(
-                "Software Engineer dataset by: Emre Öksüz",
+                "Software Engineering dataset by: Emre Öksüz",
                 style: TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.w400,
