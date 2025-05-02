@@ -1,0 +1,164 @@
+import 'dart:io';
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
+import 'package:final_project/VIEW/darkTheme.dart';
+
+class ProfileSettingsPage extends StatefulWidget {
+  ProfileSettingsPage({Key? key}) : super(key: key);
+
+
+  @override
+  _ProfileSettingsPageState createState() => _ProfileSettingsPageState();
+}
+
+
+class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
+
+  // GET PERMISSION TO ACCESS PHOTOS AND THEN CHANGE PROFILE PICTURE
+  File? _profileImage;
+  String? _assetProfileImagePath;
+  final picker = ImagePicker();
+
+  // PICK IMAGE FROM GALLERY OR SAMPLE IMAGES
+  Future<void> _pickImage() async{
+    showModalBottomSheet(
+        context: context,
+        builder: (context) => Container(
+          padding: EdgeInsets.all(16),
+          height: 200,
+          child: GridView.count(
+            crossAxisCount: 3,
+            children: [
+              GestureDetector(
+                onTap: () async{
+                  final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+                  if(pickedFile != null){
+                    setState(() {
+                      _profileImage = File(pickedFile.path);
+                      _assetProfileImagePath = null;
+                    });
+                    Navigator.pop(context);
+                  }
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.grey[200],
+                    borderRadius: BorderRadius.circular(8)
+                  ),
+                  child: Center(
+                    child: Icon(Icons.add, size: 40, color: Colors.grey[800]),
+                  )
+                ),
+              )
+            ],
+          )
+        )
+    );
+  }
+
+
+
+  @override
+  Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+
+
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.green,
+        title: Text("Your Profile"),
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+
+            // PROFILE SECTION
+            Container(
+
+              // PROFILE PICTURE
+              padding: EdgeInsets.all(30),
+              child: Column(
+                children: [
+                  GestureDetector(
+                    onTap: _pickImage,
+                    child: CircleAvatar(
+                      radius: 50,
+                      backgroundImage: _profileImage != null
+                        ? FileImage(_profileImage!)
+                        : _assetProfileImagePath != null
+                          ? AssetImage(_assetProfileImagePath!)
+                          : AssetImage('assets/avatar.png'),
+                    )
+                  ),
+
+                  SizedBox(height: 20),
+
+
+                  // NAME AND EMAIL HARDCODED
+                  // IMPLEMENT ONCE THERE'S LOGIN/SIGNUP PAGE
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        'FirstName LastName',
+                        style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(height: 10),
+                      Text(
+                        'unemployed@gmail.com',
+                        style: TextStyle(color: Colors.grey),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+
+            Divider(),
+
+
+
+            // CHANGE PROFILE PICTURE SETTING
+            ListTile(
+              leading: Icon(Icons.face_retouching_natural),
+              title: Text('Change Profile Picture'),
+              onTap: _pickImage,
+            ),
+
+
+
+            // TOGGLE DARK MODE SETTING
+            SwitchListTile(
+              secondary: Icon(Icons.dark_mode),
+              title: Text('Dark Mode'),
+              value: themeProvider.isDarkMode,
+              onChanged: (value) {
+                themeProvider.toggleDarkMode(value);
+              },
+            ),
+
+
+
+            // LOG OUT
+            ListTile(
+              leading: Icon(Icons.logout),
+              title: Text('Log Out'),
+              onTap: () {
+                // perform logout
+              },
+            ),
+
+
+          ],
+        ),
+      ),
+
+    );
+  }
+}
+
+
+
