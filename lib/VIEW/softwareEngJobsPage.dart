@@ -2,7 +2,6 @@ import 'package:final_project/PRESENTER/load_data.dart';
 import 'package:flutter/material.dart';
 import '../MODEL/data_read.dart';
 
-
 class SoftwareEngJobsPage extends StatefulWidget{
   @override
   _SoftwareEngJobsPageState createState() => _SoftwareEngJobsPageState();
@@ -11,7 +10,7 @@ class SoftwareEngJobsPage extends StatefulWidget{
 
 
 
-// TESTED SALARY DATA DISPLAY ON THIS PAGE... CHANGE THIS
+// TESTED THE SALARY DATA DISPLAY ON THIS PAGE... CHANGE THIS!!!!
 
 class _SoftwareEngJobsPageState extends State<SoftwareEngJobsPage>{
   final repo = JobRepository();
@@ -46,6 +45,10 @@ class _SoftwareEngJobsPageState extends State<SoftwareEngJobsPage>{
         },
         //DELETE ABOVE ^^^^^^^^
       ),
+
     );
   }
+
+
+
 }
