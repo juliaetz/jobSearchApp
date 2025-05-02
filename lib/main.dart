@@ -1,55 +1,61 @@
-import 'package:final_project/VIEW/jobHomePage.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:final_project/VIEW/jobHomePage.dart';
+import 'package:final_project/VIEW/darkTheme.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => ThemeProvider(),
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
+
+
+      // LIGHT / DARK THEME
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        brightness: Brightness.light,
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.green,
+          brightness: Brightness.light,
+        ),
         useMaterial3: true,
       ),
+      darkTheme: ThemeData(
+        brightness: Brightness.dark,
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.green,
+          brightness: Brightness.dark,
+        ),
+        useMaterial3: true,
+      ),
+      themeMode: themeProvider.isDarkMode ? ThemeMode.dark : ThemeMode.light,
+
 
 
       // PAGE ROUTES
       initialRoute: '/',
       routes: {
         '/': (context) => JobHomePage(),
-      }
-    );
-  }
-
-
-  /*
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      },
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
 
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
+/*
 
 class _MyHomePageState extends State<MyHomePage> {
   final repo = JobRepository();
@@ -90,9 +96,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
     );
   }
+ }
 
    */
-}
+
 
 
 

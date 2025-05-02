@@ -9,7 +9,6 @@ class SoftwareEngJobsPage extends StatefulWidget{
 }
 
 
-
 // TESTED THE SALARY DATA DISPLAY ON THIS PAGE... CHANGE THIS!!!!
 
 class _SoftwareEngJobsPageState extends State<SoftwareEngJobsPage>{
