@@ -1,4 +1,6 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:final_project/VIEW/darkTheme.dart';
 
@@ -12,6 +14,51 @@ class ProfileSettingsPage extends StatefulWidget {
 
 
 class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
+
+  // GET PERMISSION TO ACCESS PHOTOS AND THEN CHANGE PROFILE PICTURE
+  File? _profileImage;
+  String? _assetProfileImagePath;
+  final picker = ImagePicker();
+
+  // PICK IMAGE FROM GALLERY OR SAMPLE IMAGES
+  Future<void> _pickImage() async{
+    showModalBottomSheet(
+        context: context,
+        builder: (context) => Container(
+          padding: EdgeInsets.all(16),
+          height: 200,
+          child: GridView.count(
+            crossAxisCount: 3,
+            children: [
+              GestureDetector(
+                onTap: () async{
+                  final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+                  if(pickedFile != null){
+                    setState(() {
+                      _profileImage = File(pickedFile.path);
+                      _assetProfileImagePath = null;
+                    });
+                    Navigator.pop(context);
+                  }
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.grey[200],
+                    borderRadius: BorderRadius.circular(8)
+                  ),
+                  child: Center(
+                    child: Icon(Icons.add, size: 40, color: Colors.grey[800]),
+                  )
+                ),
+              )
+            ],
+          )
+        )
+    );
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
@@ -33,9 +80,16 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
               padding: EdgeInsets.all(30),
               child: Column(
                 children: [
-                  CircleAvatar(
-                    radius: 50,
-                    backgroundImage: AssetImage('assets/avatar.png'),
+                  GestureDetector(
+                    onTap: _pickImage,
+                    child: CircleAvatar(
+                      radius: 50,
+                      backgroundImage: _profileImage != null
+                        ? FileImage(_profileImage!)
+                        : _assetProfileImagePath != null
+                          ? AssetImage(_assetProfileImagePath!)
+                          : AssetImage('assets/avatar.png'),
+                    )
                   ),
 
                   SizedBox(height: 20),
@@ -71,9 +125,7 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
             ListTile(
               leading: Icon(Icons.face_retouching_natural),
               title: Text('Change Profile Picture'),
-              onTap: () {
-                // Setting to change profile picture
-              },
+              onTap: _pickImage,
             ),
 
 
