@@ -1,8 +1,5 @@
 import 'package:final_project/VIEW/jobHomePage.dart';
 import 'package:flutter/material.dart';
-import 'MODEL/data_read.dart';
-import 'PRESENTER/load_data.dart';
-
 
 void main() {
   runApp(const MyApp());
