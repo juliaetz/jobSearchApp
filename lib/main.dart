@@ -1,3 +1,5 @@
+import 'package:final_project/PRESENTER/locations_presenter.dart';
+import 'package:final_project/VIEW/locations_component.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:final_project/VIEW/jobHomePage.dart';

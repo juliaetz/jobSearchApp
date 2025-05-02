@@ -1,9 +1,15 @@
+import 'package:final_project/PRESENTER/locations_presenter.dart';
+import 'package:final_project/VIEW/jobInfo_component.dart';
+import 'package:final_project/VIEW/locations_component.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:final_project/VIEW/dataScienceJobsPage.dart';
 import 'package:final_project/VIEW/softwareEngJobsPage.dart';
 import 'package:final_project/VIEW/profile_settings_page.dart';
 import 'package:final_project/VIEW/darkTheme.dart';
+
+import '../PRESENTER/jobInfo_presenter.dart';
+
 
 class JobHomePage extends StatelessWidget {
   JobHomePage({Key? key}) : super(key: key);
@@ -61,7 +67,7 @@ class JobHomePage extends StatelessWidget {
             ),
           ),
 
-          SizedBox(height: 50),
+          SizedBox(height: 20),
 
 
 
@@ -87,7 +93,24 @@ class JobHomePage extends StatelessWidget {
             ),
           ),
 
-          SizedBox(height: 110),
+          SizedBox(height: 50),
+
+
+          // GO TO LOCATIONS PAGE (OR JOB INFO PAGE? WHICHEVER ONE FIRST!)
+          ElevatedButton(
+            onPressed: (){
+              Navigator.push(context, MaterialPageRoute(
+                builder: (context) => LocationsPage(LocationsPresenter(), key: key, title: "Locations"),
+                //builder: (context) => JobInfoPage(JobInfoPresenter(), key: key, title: "Job Information"),
+              ));
+            },
+            child: Text("Find locations!"),
+            style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            )
+          ),
+
+          SizedBox(height: 90),
 
 
 
@@ -110,20 +133,20 @@ class JobHomePage extends StatelessWidget {
             ),
           ),
 
-          SizedBox(height: 90),
+          SizedBox(height: 50),
 
 
 
           // DATASET CREDITS
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+            padding: EdgeInsets.symmetric(vertical: 2),
             child: Text(
               "Software Engineering dataset by: Emre Öksüz",
               style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
             ),
           ),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+            padding: EdgeInsets.symmetric(vertical: 5),
             child: Text(
               "Data Science dataset by: Hummaam Qaasim",
               style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
