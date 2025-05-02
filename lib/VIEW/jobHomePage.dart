@@ -1,3 +1,5 @@
+import 'package:final_project/VIEW/dataScienceJobsPage.dart';
+import 'package:final_project/VIEW/softwareEngJobsPage.dart';
 import 'package:flutter/material.dart';
 
 class JobHomePage extends StatelessWidget{
@@ -38,7 +40,9 @@ class JobHomePage extends StatelessWidget{
 
             // SOFTWARE ENGINEERING BUTTON
             ElevatedButton.icon(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => SoftwareEngJobsPage()));
+              },
               icon: Icon(Icons.call_merge_outlined),
               label: Text(
                   "Find a Software Engineering Job!",
@@ -59,9 +63,12 @@ class JobHomePage extends StatelessWidget{
             SizedBox(height: 50),
 
 
+
             // DATA SCIENCE BUTTON
             ElevatedButton.icon(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => DataScienceJobsPage()));
+              },
               icon: Icon(Icons.cable_sharp),
               label: Text(
                 "Find a Data Science Job!",
@@ -91,6 +98,7 @@ class JobHomePage extends StatelessWidget{
     );
   }
 }
+
 
 class _JobHomePageState extends JobHomePage{
 
