@@ -1,5 +1,6 @@
 import 'package:final_project/VIEW/dataScienceJobsPage.dart';
 import 'package:final_project/VIEW/softwareEngJobsPage.dart';
+import 'package:final_project/VIEW/profile_settings_page.dart';
 import 'package:flutter/material.dart';
 
 class JobHomePage extends StatelessWidget{
@@ -19,14 +20,13 @@ class JobHomePage extends StatelessWidget{
         ),
       ),
 
-      body: Container(
 
+      body: Container(
         child: Column(
           children: [
-
             // TEXT "WHERE WOULD YOU LIKE TO START?"
             Padding(
-              padding: EdgeInsets.symmetric(vertical: 100, horizontal: 55),
+              padding: EdgeInsets.symmetric(vertical: 95, horizontal: 55),
               child: Text(
                 "Where would you like to start?",
                 style: TextStyle(
@@ -86,11 +86,55 @@ class JobHomePage extends StatelessWidget{
               ),
             ),
 
+            SizedBox(height: 110),
+
+
+            // PROFILE AND SETTINGS BUTTON
+            ElevatedButton.icon(
+              onPressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileSettingsPage()));
+              },
+              icon: Icon(Icons.face_retouching_natural_outlined),
+              label: Text(
+                "Profile and Settings",
+                style: TextStyle(
+                  fontSize: 15,
+                  color: Colors.green[900],
+                ),
+              ),
+            ),
+
+            SizedBox(height: 90),
+
+
+
+            // CREDIT DATASETS
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+              child: Text(
+                "Software Engineer dataset by: Emre Öksüz",
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.black,
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+              child: Text(
+                "Data Science dataset by: Hummaam Qaasim",
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.black,
+                ),
+              ),
+            ),
 
 
           ],
         ),
-
       ),
 
 

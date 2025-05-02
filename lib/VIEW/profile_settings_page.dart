@@ -1,34 +1,26 @@
 import 'package:flutter/material.dart';
 
-class ProfileSettingsView extends StatelessWidget{
+class ProfileSettingsPage extends StatelessWidget{
   @override
-  _ProfileSettingState createState() => _ProfileSettingState();
+  _ProfileSettingsPageState createState() => _ProfileSettingsPageState();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
-
-        // CENTER APPBAR TEXT
+        backgroundColor: Colors.green,
         title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text("PROFILE"),
+            Text("Your Profile"),
           ],
+
         ),
-
-        
-
-
-
       ),
     );
   }
 }
 
-
-class _ProfileSettingState extends ProfileSettingsView{
-
+class _ProfileSettingsPageState {
 }
+
 
