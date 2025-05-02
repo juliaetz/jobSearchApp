@@ -14,8 +14,12 @@ class JobHomePage extends StatelessWidget{
           children: <Widget>[
             Text("Welcome to your Job Search!"),
           ],
-        )
+        ),
       ),
+
+
+
+
     );
   }
 }

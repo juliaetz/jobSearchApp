@@ -1,6 +1,6 @@
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:csv/csv.dart';
-import 'data_read.dart';
+import '../MODEL/data_read.dart';
 
 class JobRepository {
   Future<List<Job>> loadAndSort() async {

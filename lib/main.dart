@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'data_read.dart';
-import 'load_data.dart';
+import 'MODEL/data_read.dart';
+import 'PRESENTER/load_data.dart';
 
 void main() {
   runApp(const MyApp());
