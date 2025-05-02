@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:final_project/jobHomePage.dart';
+import 'package:final_project/VIEW/jobHomePage.dart';
 import 'package:final_project/PRESENTER/jobInfo_presenter.dart';
 import 'jobInfo_view.dart';
 import 'package:final_project/PRESENTER/resources_presenter.dart';
