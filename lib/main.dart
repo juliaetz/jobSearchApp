@@ -1,6 +1,8 @@
+import 'package:final_project/VIEW/jobHomePage.dart';
 import 'package:flutter/material.dart';
 import 'MODEL/data_read.dart';
 import 'PRESENTER/load_data.dart';
+
 
 void main() {
   runApp(const MyApp());
@@ -9,7 +11,27 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
+      ),
+
+
+      // PAGE ROUTES
+      initialRoute: '/',
+      routes: {
+        '/': (context) => JobHomePage(),
+      }
+    );
+  }
+
+
+  /*
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -66,7 +88,14 @@ class _MyHomePageState extends State<MyHomePage> {
         },
         //DELETE ABOVE ^^^^^^^^
       ),
+
+
+
     );
   }
+
+   */
 }
+
+
 
