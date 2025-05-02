@@ -41,21 +41,20 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
                   SizedBox(height: 20),
 
 
-                  // NAME
+                  // NAME AND EMAIL HARDCODED
+                  // IMPLEMENT ONCE THERE'S LOGIN/SIGNUP PAGE
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
-                        'John Doe',
+                        'FirstName LastName',
                         style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold),
                       ),
                       SizedBox(height: 10),
-
-                      // EMAIL
                       Text(
-                        'johndoe@example.com',
+                        'unemployed@gmail.com',
                         style: TextStyle(color: Colors.grey),
                       ),
                     ],
