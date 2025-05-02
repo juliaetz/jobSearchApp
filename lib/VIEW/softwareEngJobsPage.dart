@@ -11,7 +11,7 @@ class SoftwareEngJobsPage extends StatefulWidget{
 
 
 
-// TESTED DATA DISPLAY ON THIS PAGE... CHANGE THIS
+// TESTED SALARY DATA DISPLAY ON THIS PAGE... CHANGE THIS
 
 class _SoftwareEngJobsPageState extends State<SoftwareEngJobsPage>{
   final repo = JobRepository();
