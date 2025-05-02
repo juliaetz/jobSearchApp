@@ -48,7 +48,7 @@ class JobHomePage extends StatelessWidget{
                   ),
               ),
               style: ElevatedButton.styleFrom(
-                padding: EdgeInsets.symmetric(vertical: 20, horizontal: 25),
+                padding: EdgeInsets.symmetric(vertical: 30, horizontal: 25),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
@@ -71,7 +71,7 @@ class JobHomePage extends StatelessWidget{
                 ),
               ),
               style: ElevatedButton.styleFrom(
-                padding: EdgeInsets.symmetric(vertical: 20, horizontal: 30),
+                padding: EdgeInsets.symmetric(vertical: 30, horizontal: 30),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
