@@ -6,6 +6,7 @@ import 'package:final_project/VIEW/locations_view.dart';
 class LocationsPresenter {
   void updatePage(int index){}
   void updateFavorite(int index, List<String> data, String dataType){}
+  void removeFavorite(String location, String dataType){}
   set locationsView(LocationsView value){}
 }
 
@@ -39,10 +40,11 @@ class BasicLocationsPresenter extends LocationsPresenter{
         } else {
           _viewModel.dataFavorited[docs.get("Index")] = true;
         }
+        _viewModel.favoritesList[docs.get("Location")] = docs.get("Job");
       }
     });
 
-    print(_viewModel.softwareFavorited[3]);
+    _view.updateFavorites(_viewModel.favoritesList);
     _view.updateMap("Software Engineering", _viewModel.softwareFavorited);
     _view.updateMap("Data Science", _viewModel.dataFavorited);
   }
@@ -68,19 +70,8 @@ class BasicLocationsPresenter extends LocationsPresenter{
 
   @override
   void updateFavorite(int index, List<String> data, String dataType) async {
-    Map<int,bool> favorited = {};
-    if(dataType == "Software Engineering"){
-      favorited = _viewModel.softwareFavorited;
-    } else {
-      favorited = _viewModel.dataFavorited;
-    }
-
-    if(favorited[index] == null){
-      favorited[index] = true;
-    } else {
-      bool? curr = favorited[index];
-      favorited [index] = !curr!;
-    }
+    Map<int,bool> favorited = chooseMap(dataType);
+    updateBool(favorited, index);
 
     if(favorited[index] == true){
         _viewModel.locationsDatabaseReference.doc().set(
@@ -89,6 +80,7 @@ class BasicLocationsPresenter extends LocationsPresenter{
             "Job": dataType,
             "Index": index,
           });
+        _viewModel.favoritesList[data[index]] = dataType;
       } else {
         DocumentSnapshot? currDoc;
         await _viewModel.locationsDatabaseReference.get().then((results){
@@ -100,10 +92,54 @@ class BasicLocationsPresenter extends LocationsPresenter{
         });
         String? id = currDoc?.id;
         _viewModel.locationsDatabaseReference.doc(id).delete();
+        _viewModel.favoritesList.remove(data[index]);
       }
 
+    _view.updateFavorites(_viewModel.favoritesList);
     _view.updateMap(dataType, favorited);
   }
+
+  Map<int,bool> chooseMap (String dataType){
+    if(dataType == "Software Engineering"){
+      return _viewModel.softwareFavorited;
+    } else {
+      return _viewModel.dataFavorited;
+    }
+  }
+
+  void updateBool(Map<int,bool> map, int index){
+    if(map[index] == null){
+      map[index] = true;
+    } else {
+      bool? curr = map[index];
+      map [index] = !curr!;
+    }
+  }
+
+  @override
+  void removeFavorite(String location, String dataType) async {
+    _viewModel.favoritesList.remove(location); // done right away to avoid issues
+
+    DocumentSnapshot? currDoc;
+    await _viewModel.locationsDatabaseReference.get().then((results){
+      for(DocumentSnapshot docs in results.docs){
+        if(docs.get("Location") == location){
+          currDoc = docs;
+        }
+      }
+    });
+    String? id = currDoc?.id;
+    int? index = currDoc?.get("Index");
+
+    _viewModel.locationsDatabaseReference.doc(id).delete();
+
+    Map<int,bool> favorited = chooseMap(dataType);
+    updateBool(favorited, index!);
+
+
+    _view.updateFavorites(_viewModel.favoritesList);
+  }
+
 
 
 }

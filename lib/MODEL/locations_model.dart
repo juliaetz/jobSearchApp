@@ -8,6 +8,7 @@ class LocationsModel{
   CollectionReference locationsDatabaseReference = FirebaseFirestore.instance.collection('Favorite_Locations');
   Map<int,bool> softwareFavorited = <int,bool>{};
   Map<int,bool> dataFavorited = <int,bool>{};
+  Map<String,String> favoritesList = <String,String>{};
 
   int get pageIndex => _pageIndex;
   set pageIndex(int setValue){

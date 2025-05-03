@@ -28,8 +28,11 @@ class _LocationsPageState extends State<LocationsPage> implements LocationsView 
   int _selectedIndex = 0;
   List<String> _topDataLocations = ["USA", "UK", "Canada", "Spain", "Germany", "France", "Australia", "Portugal", "Netherlands", "Brazil"];
   List<String> _topSoftwareLocations = ["Remote", "Annapolis Junction", "Seattle", "San Francisco", "Boston", "San Jose", "New York", "Chicago", "Bellevue", "Atlanta"];
+  List<int> _jobsSoftware = [38,35,28,28,20,20,18,12,12,12];
+  List<int> _jobsData = [8132,449,226,113,71,50,24,24,21,17];
   Map<int,bool> _favoritedData = <int,bool>{};
   Map<int,bool> _favoritedSoftware = <int,bool>{};
+  Map<String,String> _favorites = <String,String>{};
 
   handlePageChange(int? index) {
     this.widget.presenter.updatePage(index!);
@@ -37,6 +40,10 @@ class _LocationsPageState extends State<LocationsPage> implements LocationsView 
 
   handleFavorite(int? index, List<String>? data, String? dataType){
     this.widget.presenter.updateFavorite(index!, data!, dataType!);
+  }
+
+  handleRemoveFavorite(String? loc, String? dataType){
+    this.widget.presenter.removeFavorite(loc!, dataType!);
   }
 
   @override
@@ -62,6 +69,13 @@ class _LocationsPageState extends State<LocationsPage> implements LocationsView 
       } else {
         _favoritedData = map;
       }
+    });
+  }
+
+  @override
+  void updateFavorites(Map<String,String> map){
+    setState(() {
+      _favorites = map;
     });
   }
 
@@ -133,7 +147,7 @@ class _LocationsPageState extends State<LocationsPage> implements LocationsView 
                 flex: 9,
                 child: SingleChildScrollView(
                   child: Column(
-                    children: createRows(_topDataLocations, _favoritedData, "Data Science"),
+                    children: createRows(_topDataLocations, _favoritedData, "Data Science", _jobsData),
                  ),
                 ),
               ),
@@ -141,7 +155,7 @@ class _LocationsPageState extends State<LocationsPage> implements LocationsView 
                 flex: 9,
                 child: SingleChildScrollView(
                   child: Column(
-                    children: createRows(_topSoftwareLocations, _favoritedSoftware, "Software Engineering"),//createSoftwareRows(),
+                    children: createRows(_topSoftwareLocations, _favoritedSoftware, "Software Engineering", _jobsSoftware),//createSoftwareRows(),
                   ),
                 ),
               ),
@@ -153,7 +167,7 @@ class _LocationsPageState extends State<LocationsPage> implements LocationsView 
   }
 
 
-  List<Widget> createRows(List<String> locations, Map<int,bool> isFavorited, String dataType) {
+  List<Widget> createRows(List<String> locations, Map<int,bool> isFavorited, String dataType, List<int> jobs) {
     return List.generate(locations.length, (index) {
       return Row(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -162,25 +176,21 @@ class _LocationsPageState extends State<LocationsPage> implements LocationsView 
           Flexible(
             fit: FlexFit.tight,
             flex: 8,
-            child: Text(locations[index],
-              style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),),
+            child: Tooltip(
+              message: 'There are ${jobs[index]} available $dataType jobs in ${locations[index]}',
+              child: Text(locations[index], style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),),
+            ),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              IconButton(
-                onPressed: (){
-                  handleFavorite(index, locations, dataType);
-                  /*setState(() {
-                    print("On the other side value for index $index is ${isFavorited[index]}");
-                    if(isFavorited[index] == true){
-                      heart = Icons.favorite;
-                    }
-                  });*/
-                  handlePageChange(_selectedIndex);
-                },
-                icon: Icon((isFavorited[index] == true ? Icons.favorite : Icons.favorite_border), color: Colors.deepPurple.shade700, size: 30.0,),
-              )
+             IconButton(
+               onPressed: (){
+                 handleFavorite(index, locations, dataType);
+                 handlePageChange(_selectedIndex);
+                 },
+               icon: Icon((isFavorited[index] == true ? Icons.favorite : Icons.favorite_border), color: Colors.deepPurple.shade700, size: 30.0,),
+             ),
             ],
           ),
         ],
@@ -194,8 +204,55 @@ class _LocationsPageState extends State<LocationsPage> implements LocationsView 
   @override
   Container FavoriteLocationsPage(){
     return Container(
-      child: Text('This is the favorite locations page'),
+      child: createFavorites()
     );
+  }
+
+  Expanded createFavorites() {
+    return Expanded(
+      flex: 9,
+      child: SingleChildScrollView(
+        child: Column(
+          children: createFavoritesRows(),
+        ),
+      ),
+    );
+  }
+
+  List<Widget> createFavoritesRows() {
+    return _favorites.entries.map ((entry) {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Padding(padding: EdgeInsets.all(10.0)),
+          Flexible(
+            fit: FlexFit.tight,
+            flex: 8,
+            child: Column(
+              children: [
+                Text(entry.key, style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold),),
+                Text(entry.value, style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.bold),),
+                SizedBox(height: 10.0,),
+              ],
+            ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              IconButton(
+                onPressed: (){
+                  handleRemoveFavorite(entry.key, entry.value);
+                  setState(() {
+                    handlePageChange(_selectedIndex);
+                  });
+                },
+                icon: Icon(Icons.delete, color: Colors.deepPurple.shade700, size: 30.0,),
+              ),
+            ],
+          ),
+        ],
+      );
+    }) .toList();
   }
 
 
