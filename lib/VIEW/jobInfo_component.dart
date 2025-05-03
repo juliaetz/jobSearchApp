@@ -48,7 +48,7 @@ class _JobInfoPageState extends State<JobInfoPage> implements JobInfoView {
   Widget build(BuildContext context){
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.grey,
+        backgroundColor: Colors.green,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -129,13 +129,13 @@ class _JobInfoPageState extends State<JobInfoPage> implements JobInfoView {
                     //handleScheduledIdea(_favorites[index], scheduledDate, scheduledTime);
                   }
                 },
-                icon: Icon(Icons.calendar_month, color: Colors.deepPurple.shade700, size: 30.0,),
+                icon: Icon(Icons.calendar_month, color: Colors.green.shade700, size: 30.0,),
               ),
               IconButton(
                 onPressed: (){
                   //handleRemoveFavorite(_favorites[index]);
                 },
-                icon: Icon(Icons.delete, color: Colors.deepPurple.shade700, size: 30.0,),
+                icon: Icon(Icons.delete, color: Colors.green.shade700, size: 30.0,),
               ),
             ],
           ),

@@ -101,6 +101,7 @@ class _ResourcesPageState extends State<ResourcesPage> implements ResourcesView 
 
       body: _page, //_page,
 
+
       bottomNavigationBar: _isLoading ? null: BottomNavigationBar(
         backgroundColor: Colors.deepPurple.shade700,
         iconSize: 30.0,
@@ -109,7 +110,7 @@ class _ResourcesPageState extends State<ResourcesPage> implements ResourcesView 
         selectedFontSize: 23.0,
         selectedItemColor: Colors.white,
 
-        unselectedIconTheme: IconThemeData(color: Colors.deepPurple.shade200),
+        unselectedIconTheme: IconThemeData(color: Colors.green.shade100),
         unselectedFontSize: 18.0,
         unselectedItemColor: Colors.white,
 
