@@ -39,39 +39,37 @@ class DataJobRepository {
   /// Loads, cleans, and sorts DataJob entries from
   /// data/jobs_in_data.csv, descending by salaryInUsd.
   Future<List<DataJob>> loadAndSort() async {
-    // 1. Load the raw CSV from assets
-    String rawCsv;
-    try {
-      rawCsv = await rootBundle.loadString('data/jobs_in_data.csv');
-    } on FlutterError catch (e) {
-      throw FlutterError('Could not load CSV asset: $e');
+    // 1) Load raw CSV
+    final rawCsv = await rootBundle.loadString('data/jobs_in_data.csv');
+    if (rawCsv.trim().isEmpty) {
+      throw FormatException('CSV is empty');
     }
 
-    // 2. Parse into a table of rows
+    // 2) Parse into rows
     final table = const CsvToListConverter().convert(rawCsv, eol: '\n');
+    if (table.isEmpty) {
+      throw FormatException('No rows found in CSV');
+    }
 
-    // 3. Extract header row and data rows
-    final header = table.first.map((c) => c.toString()).toList();
-    final rows   = table.skip(1);
+    // 3) Extract & normalize header
+    final header = table.first.map((c) => c.toString().trim()).toList();
 
-    // 4. Map each row → DataJob, skipping malformed entries
+    // 4) Map rows → DataJob
     final jobs = <DataJob>[];
-    for (var row in rows) {
-      // build a map<columnName, cellValue>
+    for (var row in table.skip(1)) {
       final map = <String, String>{};
-      for (var i = 0; i < header.length; i++) {
-        map[header[i]] = row[i].toString();
+      for (var i = 0; i < header.length && i < row.length; i++) {
+        map[header[i]] = row[i].toString().trim();
       }
       try {
         jobs.add(DataJob.fromMap(map));
       } catch (_) {
-        // Skip any row that fails parsing/validation
+        // skip malformed rows
       }
     }
 
-    // 5. Sort by USD salary descending
+    // 5) Sort by USD salary descending
     jobs.sort((a, b) => b.salaryInUsd.compareTo(a.salaryInUsd));
-
     return jobs;
   }
 }

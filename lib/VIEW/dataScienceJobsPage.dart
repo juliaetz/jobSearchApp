@@ -25,6 +25,7 @@ class _DataScienceJobsPageState extends State<DataScienceJobsPage> {
 
   @override
   Widget build(BuildContext context) {
+    debugPrint('🔍 Building with jobs.length = ${jobs.length}');
     return Scaffold(
       appBar: AppBar(),
       body: FutureBuilder<List<DataJob>>(
