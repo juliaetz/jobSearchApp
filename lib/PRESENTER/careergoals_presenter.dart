@@ -6,11 +6,11 @@ class CareerGoalsPresenter{
 
 
   Future<void> addCareerGoal(CareerGoal goal) async {
-      await firestore.collection('careerGoals').add(goal.toMap());
+      await firestore.collection('Career_Goals').add(goal.toMap());
   }
 
   Stream<List<CareerGoal>> getCareerGoals() {
-    return firestore.collection('careerGoals').snapshots().map((snapshot) {
+    return firestore.collection('Career_Goals').snapshots().map((snapshot) {
       return snapshot.docs.map((doc) {
         return CareerGoal.fromMap(doc.data() as Map<String, dynamic>, doc.id);
       }).toList();
@@ -18,12 +18,12 @@ class CareerGoalsPresenter{
   }
 
   Future<void> deleteGoal(String id) async {
-    await firestore.collection('careerGoals').doc(id).delete();
+    await firestore.collection('Career_Goals').doc(id).delete();
   }
 
   Future<void> completeGoal(String id) async {
-    await firestore.collection('careerGoals').doc(id).update({'isCompleted': true});
-    await firestore.collection('careerGoals').doc(id).update({'completedAt': DateTime.now()});
+    await firestore.collection('Career_Goals').doc(id).update({'isCompleted': true});
+    await firestore.collection('Career_Goals').doc(id).update({'completedAt': DateTime.now()});
   }
 
 }
