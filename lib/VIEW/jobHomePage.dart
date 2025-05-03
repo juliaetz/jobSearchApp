@@ -9,7 +9,6 @@ import 'package:final_project/VIEW/softwareEngJobsPage.dart';
 import 'package:final_project/VIEW/profile_settings_page.dart';
 import 'package:final_project/VIEW/darkTheme.dart';
 
-import '../PRESENTER/jobInfo_presenter.dart';
 
 
 class JobHomePage extends StatelessWidget {
@@ -115,9 +114,34 @@ class JobHomePage extends StatelessWidget {
             )
           ),
 
-          SizedBox(height: 90),
+          SizedBox(height: 20),
 
+          //Button to do to the career goals page
+          ElevatedButton.icon(
+              //Currently goes to the settings page as a placeholder CHANGE WHEN CAREER GOALS PAGE IS FUNCTIONAL
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ProfileSettingsPage(),
+                  ),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+              ),
+              label: Text(
+                  "Career Goals",
+                style: TextStyle(
+                  fontSize: 15,
+                ),
+              ),
+              icon: Icon(Icons.work_outline_outlined)
 
+          ),
+
+        SizedBox(height: 50),
 
           // BUTTON TO GO TO PROFILE AND SETTINGS PAGE
           ElevatedButton.icon(
@@ -138,7 +162,7 @@ class JobHomePage extends StatelessWidget {
             ),
           ),
 
-          SizedBox(height: 50),
+          SizedBox(height: 10),
 
 
 
