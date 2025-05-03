@@ -1,13 +1,12 @@
-import 'dart:io';
-
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'package:url_launcher/link.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/material.dart';
 import 'package:final_project/PRESENTER/resources_presenter.dart';
+import '../PRESENTER/jobInfo_presenter.dart';
+import 'jobInfo_component.dart';
 import 'resources_view.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
+import 'package:final_project/MODEL/articleInfo.dart';
 
 class ResourcesPage extends StatefulWidget {
   final ResourcesPresenter presenter;
@@ -19,21 +18,6 @@ class ResourcesPage extends StatefulWidget {
   _ResourcesPageState createState() => _ResourcesPageState();
 }
 
-class articleInfo{
-  String URL = "example.com";
-  String articleTitle = "";
-  String website = "";
-  String imageAsset = "";
-
-  articleInfo(String url, String title, String web, String image){
-    URL = url;
-    articleTitle = title;
-    website = web;
-    imageAsset = image;
-  }
-}
-
-
 
 class _ResourcesPageState extends State<ResourcesPage> implements ResourcesView {
   @override
@@ -42,7 +26,7 @@ class _ResourcesPageState extends State<ResourcesPage> implements ResourcesView 
     this.widget.presenter.resourcesView = this;
   }
 
-  final DraggableScrollableController sheetController = DraggableScrollableController();
+
   late InAppWebViewController inAppWebViewController;
 
   final Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers = {
@@ -51,14 +35,25 @@ class _ResourcesPageState extends State<ResourcesPage> implements ResourcesView 
 
   UniqueKey _key = UniqueKey();
 
-  Widget _page = Placeholder();
+  Widget _page = JobInfoPage(BasicJobInfoPresenter(), title: '', key: const Key(''));
   int _selectedIndex = 0;
   bool _isLoading = true;
-  List<articleInfo> resources = [articleInfo("https://www.indeed.com/career-advice/interviewing/how-to-prepare-for-an-interview", "How to Prepare for an Interview", "Indeed", "assets/images/indeedResource.jpg"),];
+  List<articleInfo> resources = [articleInfo("https://www.indeed.com/career-advice/interviewing/how-to-prepare-for-an-interview", "How to Prepare for an Interview", "Indeed", "assets/images/indeedResource.jpg"),
+  articleInfo("https://joinhandshake.com/blog/students/how-to-prepare-for-an-interview/", "How to prepare for an interview (steps & tips)", "Handshake", "assets/images/handshakeResource.jpg")];
+  Map<String, articleInfo> _favorites = <String,articleInfo>{};
   Map<int,bool> _isFavorited = <int,bool>{};
+
 
   handlePageChange(index) {
     this.widget.presenter.updatePage(index);
+  }
+
+  handleFavorite(int? index, articleInfo data){
+    this.widget.presenter.updateFavorite(index!, data);
+  }
+
+  handleRemoveFavorite(String? URL){
+    this.widget.presenter.removeFavorite(URL!);
   }
 
   @override
@@ -76,11 +71,25 @@ class _ResourcesPageState extends State<ResourcesPage> implements ResourcesView 
     });
   }
 
+  @override
+  void updateMap(Map<int,bool> map){
+    setState(() {
+      _isFavorited = map;
+    });
+  }
+
+  @override
+  void updateFavorites(Map<String,articleInfo> favorites){
+    setState(() {
+      _favorites = favorites;
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      appBar: _isLoading ? null : AppBar(
           backgroundColor: Colors.grey,
           title: Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -92,7 +101,7 @@ class _ResourcesPageState extends State<ResourcesPage> implements ResourcesView 
 
       body: _page, //_page,
 
-      bottomNavigationBar: BottomNavigationBar(
+      bottomNavigationBar: _isLoading ? null: BottomNavigationBar(
         backgroundColor: Colors.deepPurple.shade700,
         iconSize: 30.0,
 
@@ -127,13 +136,12 @@ class _ResourcesPageState extends State<ResourcesPage> implements ResourcesView 
   @override
   Container ResourcePage(){
     return Container(
-    //child: Text('This will be the locations page'),
       child: Column(
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text("Resources to Help You Prepare For Your Interview"),
+              Text("Resources to Help You Prepare For Your Interview", style: TextStyle(fontSize: 15)),
               SizedBox(height: 10.0,),
             ]
           ),
@@ -161,6 +169,7 @@ class _ResourcesPageState extends State<ResourcesPage> implements ResourcesView 
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Padding(padding: EdgeInsets.all(10.0)),
+          SizedBox(height: 10.0,),
           Flexible(
             fit: FlexFit.tight,
             flex: 3,
@@ -200,13 +209,16 @@ class _ResourcesPageState extends State<ResourcesPage> implements ResourcesView 
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              IconButton(
-                onPressed: (){
-                  //handleFavorite(index, locations, dataType);
-                  //handlePageChange(_selectedIndex);
-                },
-                icon: Icon((_isFavorited[index] == true ? Icons.favorite : Icons.favorite_border), color: Colors.deepPurple.shade700, size: 30.0,),
-              ),
+                IconButton(
+                  onPressed: () {
+                    handleFavorite(index, resources[index]);
+                    handlePageChange(_selectedIndex);
+                  },
+                  icon: Icon(
+                    (_isFavorited[index] == true ? Icons.favorite : Icons
+                        .favorite_border), color: Colors.deepPurple.shade700,
+                    size: 30.0,),
+                ),
             ],
           ),
         ],
@@ -214,10 +226,86 @@ class _ResourcesPageState extends State<ResourcesPage> implements ResourcesView 
     });
   }
 
+
   @override
   Container FavoriteResourcesPage(){
     return Container(
-      child: Text('This will be the favorite resources page'),
+      child: createRows(),
     );
   }
+
+  Expanded createRows(){
+    return Expanded(
+      flex: 9,
+      child: SingleChildScrollView(
+        child: Column(
+          children: createFavoritesRows(),
+        ),
+      ),
+    );
+  }
+
+  List<Widget> createFavoritesRows() {
+    return _favorites.entries.map ((entry){
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Padding(padding: EdgeInsets.all(10.0)),
+          SizedBox(height: 10.0,),
+          Flexible(
+            fit: FlexFit.tight,
+            flex: 3,
+            child: Row(
+              children: [
+                InkWell(
+                  child: Image.asset(entry.value.imageAsset, width: 100,),
+                  onTap: () => showModalBottomSheet(
+                      context: context,
+                      builder: (context) {
+                        return InAppWebView(
+                            key: _key,
+                            gestureRecognizers: gestureRecognizers,
+                            initialUrlRequest: URLRequest(
+                              url: WebUri.uri(Uri.parse(entry.value.URL)),
+                            ),
+                            onWebViewCreated: (InAppWebViewController controller){
+                              inAppWebViewController = controller;
+                            }
+                        );
+                      }
+                  ),
+                ),
+                SizedBox(width: 10,),
+                Flexible(
+                  child: Column(
+                    children: [
+                      Text(entry.value.articleTitle, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
+                      Text(entry.value.website, style: TextStyle(fontSize: 15,),),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              IconButton(
+                onPressed: () {
+                  handleRemoveFavorite(entry.key);
+                  setState(() {
+                    handlePageChange(_selectedIndex);
+                  });
+                },
+                icon: Icon(Icons.delete, color: Colors.deepPurple.shade700,
+                  size: 30.0,),
+              ),
+            ],
+          ),
+        ],
+      );
+    }) .toList();
+  }
+
+
 }
