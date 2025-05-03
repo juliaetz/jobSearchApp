@@ -10,50 +10,28 @@ class FilterJobsInDataView extends StatefulWidget {
 
 //Google Gemini Assisted
 class _FilterJobsInDataViewState extends State<FilterJobsInDataView> {
-  String _selectedFilter = 'Countries';
   List<String> _currentItems = [];
   List<double> _currentSalaries = [];
   Map<String, double> _currentData = {};
-
   final List<String> _filterOptions = ['Countries', 'Company Size'];
+  final String currentFilter = 'Countries';
 
-  // late FilterJobsInDataPresenter _presenter;
-  final Map<String, double> _countriesAndSalaries = {
-    'USA': 100000.0,
-    'Canada': 80000.0,
-  };
-  List<String> countries = [];
-  List<double> salaries = [];
-  final Map<String, double> _companySizesAndSalaries = {
-    'Small': 50000.0,
-    'Medium': 80000.0,
-    'Large': 120000.0,
-  };
-  List<String> companySizes = [];
-  List<double> companySalaries = [];
+  late FilterJobsInDataPresenter _presenter;
 
   @override
   void initState() {
     super.initState();
-    print("init");
-    setState(() {
-      countries = _countriesAndSalaries.keys.toList();
-      salaries = _countriesAndSalaries.values.toList();
-      companySizes = _companySizesAndSalaries.keys.toList();
-      companySalaries = _companySizesAndSalaries.values.toList();
-      _currentItems = countries;
-      _currentSalaries = salaries;
-      _currentData = _countriesAndSalaries;
-    });
-    // _presenter = FilterJobsInDataPresenter(
-    //   model: FilterJobsInDataModel(),
-    //   updateViewCountriesAndSalaries: (Map<String, double> countriesAndSalaries) {
-    //     setState(() {
-    //       _countriesAndSalaries = countriesAndSalaries;
-    //       countries = _countriesAndSalaries.keys.toList();
-    //       salaries = _countriesAndSalaries.values.toList();
-    //     });
-    // });
+    _presenter = FilterJobsInDataPresenter(
+      model: FilterJobsInDataModel(),
+      updateViewItemsAndSalaries: (Map<String, double> itemsAndSalaries) {
+        setState(() {
+          _currentData = itemsAndSalaries;
+          _currentItems = _currentData.keys.toList();
+          _currentSalaries = _currentData.values.toList();
+        });
+      },
+    );
+    _presenter.filterByCountry();
   }
 
   @override
@@ -63,16 +41,14 @@ class _FilterJobsInDataViewState extends State<FilterJobsInDataView> {
           child: Column(
             children: [
               DropdownButton<String>(
-                value: _selectedFilter,
+                value: currentFilter,
                 onChanged: (String? newValue) {
-                  setState(() {
-                    _selectedFilter = newValue!;
-                    _currentData = _selectedFilter == 'Countries'
-                        ? _countriesAndSalaries
-                        : _companySizesAndSalaries;
-                    _currentItems = _currentData.keys.toList();
-                    _currentSalaries = _currentData.values.toList();
-                  });
+                  if (newValue == 'Countries') {
+                    _presenter.filterByCountry();
+                  }
+                  if (newValue == 'Company Size') {
+                    _presenter.filterByCompanySize();
+                  }
                 },
                 items: _filterOptions
                     .map<DropdownMenuItem<String>>((String value) {
