@@ -107,13 +107,13 @@ class _LocationsPageState extends State<LocationsPage> implements LocationsView 
         unselectedFontSize: 18.0,
         unselectedItemColor: Colors.white,
 
-        items: const <BottomNavigationBarItem>[
+        items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.map_outlined),
             label: 'Locations',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.favorite),
+            icon: Icon(Icons.favorite, color: Colors.green.shade100),
             label: 'Favorites',
           ),
         ],
