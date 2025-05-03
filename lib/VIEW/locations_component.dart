@@ -1,4 +1,6 @@
+import 'package:final_project/PRESENTER/jobInfo_presenter.dart';
 import 'package:flutter/material.dart';
+import 'package:final_project/VIEW/jobInfo_component.dart';
 import 'package:final_project/PRESENTER/locations_presenter.dart';
 import 'locations_view.dart';
 
@@ -21,20 +23,27 @@ class _LocationsPageState extends State<LocationsPage> implements LocationsView 
     this.widget.presenter.locationsView = this;
   }
 
-  Widget _page = Placeholder();
+  bool _isLoading = true;
+  Widget _page = JobInfoPage(BasicJobInfoPresenter(), title: '', key: const Key(''));
   int _selectedIndex = 0;
   List<String> _topDataLocations = ["USA", "UK", "Canada", "Spain", "Germany", "France", "Australia", "Portugal", "Netherlands", "Brazil"];
   List<String> _topSoftwareLocations = ["Remote", "Annapolis Junction", "Seattle", "San Francisco", "Boston", "San Jose", "New York", "Chicago", "Bellevue", "Atlanta"];
-  List<bool> _isFavoritedData = [false, false, false, false, false, false, false, false, false, false];
+  Map<int,bool> _favoritedData = <int,bool>{};
+  Map<int,bool> _favoritedSoftware = <int,bool>{};
 
-  handlePageChange(index) {
-    this.widget.presenter.updatePage(index);
+  handlePageChange(int? index) {
+    this.widget.presenter.updatePage(index!);
+  }
+
+  handleFavorite(int? index, List<String>? data, String? dataType){
+    this.widget.presenter.updateFavorite(index!, data!, dataType!);
   }
 
   @override
   void updatePage(Widget page){
     setState(() {
       _page = page;
+      _isLoading = false;
     });
   }
 
@@ -45,11 +54,22 @@ class _LocationsPageState extends State<LocationsPage> implements LocationsView 
     });
   }
 
+  @override
+  void updateMap(String dataType, Map<int,bool> map){
+    setState(() {
+      if(dataType == "Software Engineering"){
+        _favoritedSoftware = map;
+      } else {
+        _favoritedData = map;
+      }
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      appBar: _isLoading ? null : AppBar(
           backgroundColor: Colors.grey,
           title: Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -61,7 +81,7 @@ class _LocationsPageState extends State<LocationsPage> implements LocationsView 
 
       body: _page, //_page,
 
-      bottomNavigationBar: BottomNavigationBar(
+      bottomNavigationBar: _isLoading ? null : BottomNavigationBar(
         backgroundColor: Colors.grey.shade800,
         iconSize: 30.0,
 
@@ -113,7 +133,7 @@ class _LocationsPageState extends State<LocationsPage> implements LocationsView 
                 flex: 9,
                 child: SingleChildScrollView(
                   child: Column(
-                    children: createDataRows(),
+                    children: createRows(_topDataLocations, _favoritedData, "Data Science"),
                  ),
                 ),
               ),
@@ -121,7 +141,7 @@ class _LocationsPageState extends State<LocationsPage> implements LocationsView 
                 flex: 9,
                 child: SingleChildScrollView(
                   child: Column(
-                    children: createSoftwareRows(),
+                    children: createRows(_topSoftwareLocations, _favoritedSoftware, "Software Engineering"),//createSoftwareRows(),
                   ),
                 ),
               ),
@@ -132,8 +152,9 @@ class _LocationsPageState extends State<LocationsPage> implements LocationsView 
     );
   }
 
-  List<Widget> createDataRows() {
-    return List.generate(_topDataLocations.length, (index) {
+
+  List<Widget> createRows(List<String> locations, Map<int,bool> isFavorited, String dataType) {
+    return List.generate(locations.length, (index) {
       return Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
@@ -141,7 +162,7 @@ class _LocationsPageState extends State<LocationsPage> implements LocationsView 
           Flexible(
             fit: FlexFit.tight,
             flex: 8,
-            child: Text(_topDataLocations[index],
+            child: Text(locations[index],
               style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),),
           ),
           Row(
@@ -149,14 +170,16 @@ class _LocationsPageState extends State<LocationsPage> implements LocationsView 
             children: [
               IconButton(
                 onPressed: (){
-                  setState(() {
-                    _isFavoritedData[index] = !_isFavoritedData[index];
-                  });
+                  handleFavorite(index, locations, dataType);
+                  /*setState(() {
+                    print("On the other side value for index $index is ${isFavorited[index]}");
+                    if(isFavorited[index] == true){
+                      heart = Icons.favorite;
+                    }
+                  });*/
                   handlePageChange(_selectedIndex);
                 },
-                icon: Icon(
-                  _isFavoritedData[index] ? Icons.favorite : Icons.favorite_border,
-                  color: Colors.deepPurple.shade700, size: 30.0,),
+                icon: Icon((isFavorited[index] == true ? Icons.favorite : Icons.favorite_border), color: Colors.deepPurple.shade700, size: 30.0,),
               )
             ],
           ),
@@ -166,33 +189,7 @@ class _LocationsPageState extends State<LocationsPage> implements LocationsView 
   }
 
 
-  List<Widget> createSoftwareRows() {
-    return List.generate(_topSoftwareLocations.length, (index) {
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Padding(padding: EdgeInsets.all(10.0)),
-          Flexible(
-            fit: FlexFit.tight,
-            flex: 8,
-            child: Text(_topSoftwareLocations[index],
-              style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              IconButton(
-                onPressed: (){
 
-                },
-                icon: Icon(Icons.favorite_border, color: Colors.deepPurple.shade700, size: 30.0,),
-              )
-            ],
-          ),
-        ],
-      );
-    });
-  }
 
   @override
   Container FavoriteLocationsPage(){
