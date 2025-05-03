@@ -40,7 +40,12 @@ class DataJobRepository {
   /// data/jobs_in_data.csv, descending by salaryInUsd.
   Future<List<DataJob>> loadAndSort() async {
     // 1. Load the raw CSV from assets
-    final rawCsv = await rootBundle.loadString('data/jobs_in_data.csv');
+    String rawCsv;
+    try {
+      rawCsv = await rootBundle.loadString('data/jobs_in_data.csv');
+    } on FlutterError catch (e) {
+      throw FlutterError('Could not load CSV asset: $e');
+    }
 
     // 2. Parse into a table of rows
     final table = const CsvToListConverter().convert(rawCsv, eol: '\n');

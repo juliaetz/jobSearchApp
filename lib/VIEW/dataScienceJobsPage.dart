@@ -20,28 +20,33 @@ class _DataScienceJobsPageState extends State<DataScienceJobsPage> {
       for (var j in jobs.take(5)) {
         print('${j.jobTitle} @ ${j.companyLocation}: \$${j.salaryInUsd}');
       }
-    }).catchError((e) {
-      print('Error loading CSV: $e');
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.green,
-        title: Text('Data Science Careers'),
-      ),
-      body: jobs.isEmpty
-          ? Center(child: CircularProgressIndicator())
-          : ListView.builder(
-        itemCount: jobs.length,
-        itemBuilder: (context, index) {
-          final job = jobs[index];
-          return ListTile(
-            title: Text(job.jobTitle),
-            subtitle: Text('${job.companyLocation} • ${job.experienceLevel}'),
-            trailing: Text('\$${job.salaryInUsd}'),
+      appBar: AppBar(),
+      body: FutureBuilder<List<DataJob>>(
+        future: repo.loadAndSort(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState != ConnectionState.done) {
+            return Center(child: CircularProgressIndicator());
+          }
+          if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          }
+          final jobs = snapshot.data!;
+          return ListView.builder(
+            itemCount: jobs.length,
+            itemBuilder: (_, i) {
+              final j = jobs[i];
+              return ListTile(
+                title: Text(j.jobTitle),
+                subtitle: Text('${j.companyLocation} • ${j.experienceLevel}'),
+                trailing: Text('\$${j.salaryInUsd}'),
+              );
+            },
           );
         },
       ),
