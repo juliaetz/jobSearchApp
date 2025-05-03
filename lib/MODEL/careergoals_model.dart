@@ -1,38 +1,43 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 enum GoalType{shortTerm, longTerm}
 
 class CareerGoal{
   final String id;
   final String goal;
   final GoalType goalType;
-  final DateTime completionDate;
-  final bool isCompleted;
   final DateTime? creationDate;
+  final bool isCompleted;
+  final DateTime completionDate;
 
 
   CareerGoal({
     required this.id,
     required this.goal,
     required this.goalType,
-    required this.completionDate,
-    this.isCompleted = false,
     this.creationDate,
+    this.isCompleted = false,
+    required this.completionDate,
+
+
   });
 
   Map<String, dynamic> toMap() {
     return {
       'goal': goal,
       'goalType': goalType.name,
-      'completionDate': completionDate.toIso8601String(),
+      'createdAt': creationDate != null ? Timestamp.fromDate(creationDate!) : null,
       'isCompleted': isCompleted,
-      'createdAt': creationDate?.toIso8601String(),
+      'completionDate': Timestamp.fromDate(completionDate),
     };
 
   }
 
   factory CareerGoal.fromMap(Map<String, dynamic> map, String id) {
-      if(!map.containsKey('goal') || !map.containsKey('goalType')
-          || !map.containsKey('completionDate') || !map.containsKey('isCompleted')
-          || !map.containsKey('createdAt')){
+      if(!map.containsKey('goal') ||
+          !map.containsKey('goalType') ||
+          !map.containsKey('completionDate') ||
+          !map.containsKey('isCompleted') ||
+          !map.containsKey('createdAt')){
         throw Exception('Invalid career goal data');
       }
 
@@ -40,9 +45,9 @@ class CareerGoal{
         id: id,
         goal: map['goal'] ?? '',
         goalType: GoalType.values.firstWhere((type) => type.name == map['goalType']),
-        completionDate: DateTime.parse(map['completionDate']),
+        creationDate: map['createdAt'] != null ? (map['createdAt'] as Timestamp).toDate() : null,
         isCompleted: map['isCompleted'],
-        creationDate: map['createdAt'] != null ? DateTime.parse(map['createdAt']) : null,
+        completionDate: (map['completionDate'] as Timestamp).toDate(),
       );
   }
 
