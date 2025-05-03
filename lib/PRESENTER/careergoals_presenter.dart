@@ -12,7 +12,7 @@ class CareerGoalsPresenter{
   Stream<List<CareerGoal>> getCareerGoals() {
     return firestore.collection('Career_Goals').snapshots().map((snapshot) {
       return snapshot.docs.map((doc) {
-        return CareerGoal.fromMap(doc.data() as Map<String, dynamic>, doc.id);
+        return CareerGoal.fromMap(doc.data(), doc.id);
       }).toList();
     });
   }
