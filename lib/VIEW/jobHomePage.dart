@@ -1,5 +1,6 @@
 import 'package:final_project/PRESENTER/locations_presenter.dart';
 import 'package:final_project/VIEW/jobInfo_component.dart';
+import 'package:final_project/PRESENTER/jobInfo_presenter.dart';
 import 'package:final_project/VIEW/locations_component.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -100,11 +101,11 @@ class JobHomePage extends StatelessWidget {
           ElevatedButton(
             onPressed: (){
               Navigator.push(context, MaterialPageRoute(
-                builder: (context) => LocationsPage(LocationsPresenter(), key: key, title: "Locations"),
+                builder: (context) => JobInfoPage(BasicJobInfoPresenter(), title: 'INFO', key: const Key('INFO')),
                 //builder: (context) => JobInfoPage(JobInfoPresenter(), key: key, title: "Job Information"),
               ));
             },
-            child: Text("Find locations!"),
+            child: Text("Find Job Information!"),
             style: ElevatedButton.styleFrom(
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             )
