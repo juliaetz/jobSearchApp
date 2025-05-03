@@ -58,5 +58,66 @@ class Job {
 
 }
 
+class DataJob {
+  final int workYear;
+  final String jobTitle;
+  final String jobCategory;
+  final String salaryCurrency;
+  final int salary;         // original currency
+  final int salaryInUsd;    // USD equivalent
+  final String employeeResidence;
+  final String experienceLevel;
+  final String employmentType;
+  final String workSetting;
+  final String companyLocation;
+  final String companySize;
+
+  DataJob({
+    required this.workYear,
+    required this.jobTitle,
+    required this.jobCategory,
+    required this.salaryCurrency,
+    required this.salary,
+    required this.salaryInUsd,
+    required this.employeeResidence,
+    required this.experienceLevel,
+    required this.employmentType,
+    required this.workSetting,
+    required this.companyLocation,
+    required this.companySize,
+  });
+
+  factory DataJob.fromMap(Map<String, String> row) {
+    // 1) Basic trims & parses
+    final workYear          = int.parse(row['work_year']!.trim());
+    final jobTitle          = row['job_title']!.trim();
+    final jobCategory       = row['job_category']!.trim();
+    final salaryCurrency    = row['salary_currency']!.trim();
+    final salary            = int.parse(row['salary']!.trim());
+    final salaryInUsd       = int.parse(row['salary_in_usd']!.trim());
+    final employeeResidence = row['employee_residence']!.trim();
+    final experienceLevel   = row['experience_level']!.trim();
+    final employmentType    = row['employment_type']!.trim();
+    final workSetting       = row['work_setting']!.trim();
+    final companyLocation   = row['company_location']!.trim();
+    final companySize       = row['company_size']!.trim();
+
+    return DataJob(
+      workYear: workYear,
+      jobTitle: jobTitle,
+      jobCategory: jobCategory,
+      salaryCurrency: salaryCurrency,
+      salary: salary,
+      salaryInUsd: salaryInUsd,
+      employeeResidence: employeeResidence,
+      experienceLevel: experienceLevel,
+      employmentType: employmentType,
+      workSetting: workSetting,
+      companyLocation: companyLocation,
+      companySize: companySize,
+    );
+  }
+}
+
 
 
