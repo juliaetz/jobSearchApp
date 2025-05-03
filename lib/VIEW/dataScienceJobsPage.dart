@@ -27,7 +27,7 @@ class _DataScienceJobsPageState extends State<DataScienceJobsPage> {
   Widget build(BuildContext context) {
     debugPrint('🔍 Building with jobs.length = ${jobs.length}');
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(backgroundColor: Colors.green, title: Text("Data Science Careers")),
       body: FutureBuilder<List<DataJob>>(
         future: repo.loadAndSort(),
         builder: (context, snapshot) {
