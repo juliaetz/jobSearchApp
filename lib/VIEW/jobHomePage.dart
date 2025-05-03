@@ -96,7 +96,7 @@ class JobHomePage extends StatelessWidget {
           SizedBox(height: 50),
 
 
-          // GO TO LOCATIONS PAGE (OR JOB INFO PAGE? WHICHEVER ONE FIRST!)
+          // GO TO LOCATIONS PAGE (OR JOB INFO PAGE? WHICHEVER ONE FIRST?)
           ElevatedButton(
             onPressed: (){
               Navigator.push(context, MaterialPageRoute(

@@ -20,16 +20,24 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
   String? _assetProfileImagePath;
   final picker = ImagePicker();
 
-  // PICK IMAGE FROM GALLERY OR SAMPLE IMAGES
+  // SAMPLE IMAGES FOR PROFILE PICTURE
   Future<void> _pickImage() async{
+    final sampleImages = [
+      'assets/images/burningComputerCat.jpg',
+      'assets/images/vacationCat.jpg',
+    ];
+
+
+    // PICK IMAGES FROM GALLERY OR SAMPLE IMAGES
     showModalBottomSheet(
         context: context,
         builder: (context) => Container(
           padding: EdgeInsets.all(16),
-          height: 200,
+          height: 250,
           child: GridView.count(
             crossAxisCount: 3,
             children: [
+              // OPTION TO ADD FROM GALLERY
               GestureDetector(
                 onTap: () async{
                   final pickedFile = await picker.pickImage(source: ImageSource.gallery);
@@ -48,9 +56,31 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
                   ),
                   child: Center(
                     child: Icon(Icons.add, size: 40, color: Colors.grey[800]),
-                  )
+                  ),
                 ),
-              )
+              ),
+
+              // SAMPLE IMAGES
+              for (var imagePath in sampleImages)
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      _assetProfileImagePath = imagePath;
+                      _profileImage = null;
+                    });
+                    Navigator.pop(context);
+                  },
+                  child: Container(
+                    margin: EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      image: DecorationImage(
+                        image: AssetImage(imagePath),
+                        fit: BoxFit.cover,
+                      )
+                    ),
+                  )
+                )
             ],
           )
         )
