@@ -21,7 +21,7 @@ class CareerGoal{
   Map<String, dynamic> toMap() {
     return {
       'goal': goal,
-      'goalType': goalType.toString(),
+      'goalType': goalType.name,
       'completionDate': completionDate.toIso8601String(),
       'isCompleted': isCompleted,
       'createdAt': creationDate?.toIso8601String(),
@@ -39,7 +39,7 @@ class CareerGoal{
       return CareerGoal(
         id: id,
         goal: map['goal'] ?? '',
-        goalType: GoalType.values.firstWhere((type) => type.toString() == map['goalType']),
+        goalType: GoalType.values.firstWhere((type) => type.name == map['goalType']),
         completionDate: DateTime.parse(map['completionDate']),
         isCompleted: map['isCompleted'],
         creationDate: map['createdAt'] != null ? DateTime.parse(map['createdAt']) : null,
