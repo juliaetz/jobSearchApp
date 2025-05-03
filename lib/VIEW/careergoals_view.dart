@@ -47,7 +47,7 @@ class _CareerGoalsPageState extends State<CareerGoalsPage> {
                           ),
                           child: ListTile(
                             title: Text(goal.goal, style: TextStyle(fontWeight: FontWeight.bold)),
-                            subtitle: Text(goal.goalType.toString()),
+                            subtitle: GoalType.shortTerm == goal.goalType ? Text('Short-Term') : Text('Long-Term'),
                           ),
                         );
                       }
