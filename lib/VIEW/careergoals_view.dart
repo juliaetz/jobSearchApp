@@ -16,12 +16,7 @@ class _CareerGoalsPageState extends State<CareerGoalsPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.green,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text("Career Goals"),
-          ],
-        ),
+        title: Text("Career Goals"),
       ),
     );
   }
