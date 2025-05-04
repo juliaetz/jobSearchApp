@@ -139,6 +139,7 @@ class _CareerGoalsPageState extends State<CareerGoalsPage> {
           ],
         ),
       ),
+      //TODO MAKE TRANSITION MORE SMOOTH
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: 0,
         onTap: (index) {
