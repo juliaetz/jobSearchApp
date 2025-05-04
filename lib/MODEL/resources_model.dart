@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
-
-//import 'package:stress_managment_app/firebase_logic.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+//import 'package:stress_managment_app/account_firebase_logic.dart';
+import 'articleInfo.dart';
 
 class ResourcesModel{
   int _pageIndex = 0;
+  CollectionReference resourcesDatabaseReference = FirebaseFirestore.instance.collection('Favorite_Resources');
+  Map<int,bool> favorited = <int,bool>{};
+  Map<String,articleInfo> favoritesList = <String,articleInfo>{}; // String = url
 
   int get pageIndex => _pageIndex;
   set pageIndex(int setValue){

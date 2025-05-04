@@ -7,8 +7,7 @@ plugins {
 }
 
 dependencies {
-    implementation platform('com.google.firebase:firebase-bom:33.13.0')
-    implementation 'com.google.firebase:firebase-firestore'
+    implementation platform('com.google.firebase:firebase-bom:33.8.0')
 }
 android {
     namespace = "com.example.final_project"

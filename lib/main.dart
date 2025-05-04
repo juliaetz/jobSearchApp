@@ -1,11 +1,12 @@
-import 'package:final_project/PRESENTER/locations_presenter.dart';
-import 'package:final_project/VIEW/locations_component.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:final_project/VIEW/jobHomePage.dart';
 import 'package:final_project/VIEW/darkTheme.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'auth_gate.dart';
+import 'package:final_project/VIEW/account_screens/sign_in_view.dart';
+import 'package:final_project/VIEW/account_screens/sign_up_view.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -54,57 +55,14 @@ class MyApp extends StatelessWidget {
       // PAGE ROUTES
       initialRoute: '/',
       routes: {
-        '/': (context) => JobHomePage(),
+        '/': (context) => AuthGate(),
+        '/home': (context) => JobHomePage(),
+        '/signin': (context) => SignInScreen(),
+        '/signup': (context) => SignUpScreen(),
       },
     );
   }
 }
-
-
-/*
-
-class _MyHomePageState extends State<MyHomePage> {
-  final repo = JobRepository();
-  List<Job> jobs = [];
-
-  @override
-  void initState() {
-    super.initState();
-    repo.loadAndSort().then((list) {
-      setState(() => jobs = list);
-      // for now, just print top 5:
-      for (var j in jobs.take(5)) {
-        print('${j.title} @ ${j.company}, ${j.location}: \$${j.avgSalary}');
-      }
-      //DELETE ABOVE ^^^^^
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    // later: build ListView, add search/filter, compare by city, …
-    return Scaffold(
-      appBar: AppBar(title: Text('Salaries')),
-      body: ListView.builder(
-        itemCount: jobs.length,
-        itemBuilder: (_, i) {
-          final j = jobs[i];
-          return ListTile(
-            title: Text(j.title),
-            subtitle: Text('${j.company} • ${j.location}'),
-            trailing: Text('\$${j.avgSalary}'),
-          );
-        },
-        //DELETE ABOVE ^^^^^^^^
-      ),
-
-
-
-    );
-  }
- }
-
-   */
 
 
 

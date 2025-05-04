@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
-//import 'package:stress_managment_app/firebase_logic.dart';
+//import 'package:stress_managment_app/account_firebase_logic.dart';
 
 class LocationsModel{
   int _pageIndex = 0;
