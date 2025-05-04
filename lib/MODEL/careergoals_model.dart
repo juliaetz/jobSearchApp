@@ -16,7 +16,7 @@ class CareerGoal{
     required this.goalType,
     this.creationDate,
     this.isCompleted = false,
-    required this.completionDate,
+    this.completionDate,
 
 
   });

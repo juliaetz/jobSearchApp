@@ -23,7 +23,7 @@ class CareerGoalsPresenter{
 
   Future<void> completeGoal(String id) async {
     await firestore.collection('Career_Goals').doc(id).update({'isCompleted': true});
-    await firestore.collection('Career_Goals').doc(id).update({'completedAt': DateTime.now()});
+    await firestore.collection('Career_Goals').doc(id).update({'completionDate': DateTime.now()});
   }
 
 }
