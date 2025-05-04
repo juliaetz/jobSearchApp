@@ -1,4 +1,3 @@
-import 'package:final_project/PRESENTER/locations_presenter.dart';
 import 'package:final_project/VIEW/jobInfo_component.dart';
 import 'package:final_project/PRESENTER/jobInfo_presenter.dart';
 import 'package:final_project/VIEW/locations_component.dart';
@@ -8,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:final_project/VIEW/DATA_SCIENCE/dataScienceJobsPage.dart';
 import 'package:final_project/VIEW/SOFTWARE_ENG/softwareEngJobsPage.dart';
 import 'package:final_project/VIEW/darkTheme.dart';
+import 'package:final_project/VIEW/careergoals_view.dart';
 
 import '../PRESENTER/jobInfo_presenter.dart';
 import 'account_screens/profile_settings_page.dart';
@@ -116,9 +116,34 @@ class JobHomePage extends StatelessWidget {
             )
           ),
 
-          SizedBox(height: 90),
+          SizedBox(height: 20),
 
+          //Button to do to the career goals page
+          ElevatedButton.icon(
+              //Currently goes to the settings page as a placeholder CHANGE WHEN CAREER GOALS PAGE IS FUNCTIONAL
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => CareerGoalsPage(),
+                  ),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+              ),
+              label: Text(
+                  "Career Goals",
+                style: TextStyle(
+                  fontSize: 15,
+                ),
+              ),
+              icon: Icon(Icons.work_outline_outlined)
 
+          ),
+
+        SizedBox(height: 50),
 
           // BUTTON TO GO TO PROFILE AND SETTINGS PAGE
           ElevatedButton.icon(
@@ -138,7 +163,8 @@ class JobHomePage extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(height: 50),
+
+          SizedBox(height: 10),
 
 
 
