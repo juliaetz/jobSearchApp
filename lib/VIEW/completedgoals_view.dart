@@ -1,7 +1,7 @@
 import 'package:final_project/MODEL/careergoals_model.dart';
 import 'package:final_project/PRESENTER/careergoals_presenter.dart';
-import 'package:final_project/VIEW/uncompletedgoals_view.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class CompletedGoalsPage extends StatefulWidget {
   const CompletedGoalsPage({Key? key}) : super(key: key);
@@ -48,7 +48,7 @@ class _CompletedGoalsPageState extends State<CompletedGoalsPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text('Type: ${goal.goalType == GoalType.shortTerm ? 'Short-Term' : 'Long-Term'}'),
-                                Text('Completed on: ${goal.completionDate.toString()}'),
+                                Text('Completed on: ${DateFormat('MM-dd-yyyy').format(goal.completionDate!)}'),
                               ],
 
                             ),

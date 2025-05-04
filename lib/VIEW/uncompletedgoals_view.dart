@@ -1,6 +1,6 @@
 import 'package:final_project/MODEL/careergoals_model.dart';
 import 'package:final_project/PRESENTER/careergoals_presenter.dart';
-import 'package:final_project/VIEW/completedgoals_view.dart';
+import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 
 class UncompletedGoalsPage extends StatefulWidget {
@@ -48,7 +48,7 @@ class _UncompletedGoalsPageState extends State<UncompletedGoalsPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text('Type: ${goal.goalType == GoalType.shortTerm ? 'Short-Term' : 'Long-Term'}'),
-                                Text('Created on: ${goal.creationDate.toString()}'),
+                                Text('Created on: ${DateFormat('MM-dd-yyyy').format(goal.creationDate!)}'),
                               ],
                             ),
                             trailing: Row(
