@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:final_project/VIEW/darkTheme.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileSettingsPage extends StatefulWidget {
   ProfileSettingsPage({Key? key}) : super(key: key);
@@ -20,16 +21,76 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
   String? _assetProfileImagePath;
   final picker = ImagePicker();
 
-  // PICK IMAGE FROM GALLERY OR SAMPLE IMAGES
+
+  // KEEP IMAGE ON PROFILE EVERY TIME APP LOADS
+  @override
+  void initState(){
+    super.initState();
+    _loadProfileImage();
+  }
+
+  Future<void> _loadProfileImage() async{
+    final prefs = await SharedPreferences.getInstance();
+    final path = prefs.getString('profileImagePath');
+    final assetPath = prefs.getString('assetProfileImagePath');
+
+    setState(() {
+      if(path != null){
+        _profileImage = File(path);
+        _assetProfileImagePath = null;
+      }
+      else if (assetPath != null){
+        _assetProfileImagePath = assetPath;
+        _profileImage = null;
+      }
+    });
+  }
+
+
+  // SAVE IMAGE TO PROFILE
+  Future<void> _saveProfileImage() async{
+    final prefs = await SharedPreferences.getInstance();
+    if(_profileImage != null){
+      await prefs.setString('profileImagePath', _profileImage!.path);
+      await prefs.remove('assetProfileImagePath');
+    }
+    else if (_assetProfileImagePath != null){
+      await prefs.setString('assetProfileImagePath', _assetProfileImagePath!);
+      await prefs.remove('profileImagePath');
+    }
+
+    if (mounted){
+      Future.delayed(Duration(milliseconds: 300), (){
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Profile picture saved!')),
+        );
+      });
+    }
+  }
+
+
+  // SAMPLE IMAGES FOR PROFILE PICTURE
+  // ALL FOUND ON PINTEREST!
   Future<void> _pickImage() async{
+    final sampleImages = [
+      'assets/images/burningComputerCat.jpg',
+      'assets/images/vacationCat.jpg',
+      'assets/images/employed_cat.jpg',
+      'assets/images/money_throw.jpg',
+    ];
+
+
+
+    // PICK IMAGES FROM GALLERY OR SAMPLE IMAGES
     showModalBottomSheet(
         context: context,
         builder: (context) => Container(
           padding: EdgeInsets.all(16),
-          height: 200,
+          height: 250,
           child: GridView.count(
             crossAxisCount: 3,
             children: [
+              // OPTION TO ADD FROM GALLERY
               GestureDetector(
                 onTap: () async{
                   final pickedFile = await picker.pickImage(source: ImageSource.gallery);
@@ -38,7 +99,10 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
                       _profileImage = File(pickedFile.path);
                       _assetProfileImagePath = null;
                     });
+
                     Navigator.pop(context);
+                    await _saveProfileImage();
+                    await _loadProfileImage();
                   }
                 },
                 child: Container(
@@ -48,9 +112,35 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
                   ),
                   child: Center(
                     child: Icon(Icons.add, size: 40, color: Colors.grey[800]),
-                  )
+                  ),
                 ),
-              )
+              ),
+
+
+              // SAMPLE IMAGES
+              for (var imagePath in sampleImages)
+                GestureDetector(
+                  onTap: () async {
+                    setState(() {
+                      _assetProfileImagePath = imagePath;
+                      _profileImage = null;
+                    });
+
+                    Navigator.pop(context);
+                    await _saveProfileImage();
+                    await _loadProfileImage();
+                  },
+                  child: Container(
+                    margin: EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      image: DecorationImage(
+                        image: AssetImage(imagePath),
+                        fit: BoxFit.cover,
+                      )
+                    ),
+                  )
+                )
             ],
           )
         )
@@ -87,12 +177,13 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
                       backgroundImage: _profileImage != null
                         ? FileImage(_profileImage!)
                         : _assetProfileImagePath != null
-                          ? AssetImage(_assetProfileImagePath!)
+                          ? AssetImage(_assetProfileImagePath!) as ImageProvider
                           : AssetImage('assets/avatar.png'),
                     )
                   ),
 
                   SizedBox(height: 20),
+
 
 
                   // NAME AND EMAIL HARDCODED

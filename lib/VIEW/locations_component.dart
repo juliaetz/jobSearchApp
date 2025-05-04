@@ -84,7 +84,7 @@ class _LocationsPageState extends State<LocationsPage> implements LocationsView 
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _isLoading ? null : AppBar(
-          backgroundColor: Colors.grey,
+          backgroundColor: Colors.green,
           title: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -96,7 +96,7 @@ class _LocationsPageState extends State<LocationsPage> implements LocationsView 
       body: _page, //_page,
 
       bottomNavigationBar: _isLoading ? null : BottomNavigationBar(
-        backgroundColor: Colors.grey.shade800,
+        backgroundColor: Colors.green.shade900,
         iconSize: 30.0,
 
         selectedIconTheme: IconThemeData(color: Colors.white),
@@ -107,13 +107,13 @@ class _LocationsPageState extends State<LocationsPage> implements LocationsView 
         unselectedFontSize: 18.0,
         unselectedItemColor: Colors.white,
 
-        items: const <BottomNavigationBarItem>[
+        items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.map_outlined),
             label: 'Locations',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.favorite),
+            icon: Icon(Icons.favorite, color: Colors.green.shade100),
             label: 'Favorites',
           ),
         ],
@@ -189,7 +189,7 @@ class _LocationsPageState extends State<LocationsPage> implements LocationsView 
                  handleFavorite(index, locations, dataType);
                  handlePageChange(_selectedIndex);
                  },
-               icon: Icon((isFavorited[index] == true ? Icons.favorite : Icons.favorite_border), color: Colors.deepPurple.shade700, size: 30.0,),
+               icon: Icon((isFavorited[index] == true ? Icons.favorite : Icons.favorite_border), color: Colors.green.shade700, size: 30.0,),
              ),
             ],
           ),
@@ -246,7 +246,7 @@ class _LocationsPageState extends State<LocationsPage> implements LocationsView 
                     handlePageChange(_selectedIndex);
                   });
                 },
-                icon: Icon(Icons.delete, color: Colors.deepPurple.shade700, size: 30.0,),
+                icon: Icon(Icons.delete, color: Colors.green.shade700, size: 30.0,),
               ),
             ],
           ),

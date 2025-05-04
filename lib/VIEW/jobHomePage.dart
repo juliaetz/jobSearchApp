@@ -4,8 +4,8 @@ import 'package:final_project/PRESENTER/jobInfo_presenter.dart';
 import 'package:final_project/VIEW/locations_component.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:final_project/VIEW/dataScienceJobsPage.dart';
-import 'package:final_project/VIEW/softwareEngJobsPage.dart';
+import 'package:final_project/VIEW/DATA_SCIENCE/dataScienceJobsPage.dart';
+import 'package:final_project/VIEW/SOFTWARE_ENG/softwareEngJobsPage.dart';
 import 'package:final_project/VIEW/profile_settings_page.dart';
 import 'package:final_project/VIEW/darkTheme.dart';
 
@@ -94,10 +94,10 @@ class JobHomePage extends StatelessWidget {
             ),
           ),
 
-          SizedBox(height: 50),
+          SizedBox(height: 55),
 
 
-          // GO TO LOCATIONS PAGE (OR JOB INFO PAGE? WHICHEVER ONE FIRST!)
+          // GO TO LOCATIONS PAGE (OR JOB INFO PAGE? WHICHEVER ONE FIRST?)
           ElevatedButton(
             onPressed: (){
               Navigator.push(context, MaterialPageRoute(
@@ -105,9 +105,13 @@ class JobHomePage extends StatelessWidget {
                 //builder: (context) => JobInfoPage(JobInfoPresenter(), key: key, title: "Job Information"),
               ));
             },
-            child: Text("Find Job Information!"),
             style: ElevatedButton.styleFrom(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+              padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+            ),
+            child: Text(
+              "FIND MORE JOB INFO HERE!",
+              style: TextStyle(fontSize: 15),
             )
           ),
 

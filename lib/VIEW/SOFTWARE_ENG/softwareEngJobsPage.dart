@@ -1,6 +1,7 @@
 import 'package:final_project/PRESENTER/load_data.dart';
 import 'package:flutter/material.dart';
-import '../MODEL/data_read.dart';
+import '../../MODEL/data_read.dart';
+
 
 class SoftwareEngJobsPage extends StatefulWidget{
   @override
@@ -9,7 +10,7 @@ class SoftwareEngJobsPage extends StatefulWidget{
 }
 
 
-// TESTED THE SALARY DATA DISPLAY ON THIS PAGE... CHANGE THIS!!!!
+// TEMPORARY TO DISPLAY DATA ON PAGE, MODIFY THIS FOR FILTERING!
 
 class _SoftwareEngJobsPageState extends State<SoftwareEngJobsPage>{
   final repo = JobRepository();
@@ -20,7 +21,6 @@ class _SoftwareEngJobsPageState extends State<SoftwareEngJobsPage>{
     super.initState();
     repo.loadAndSort().then((list) {
       setState(() => jobs = list);
-      // for now, just print top 5:
       for (var j in jobs.take(5)) {
         print('${j.title} @ ${j.company}, ${j.location}: \$${j.avgSalary}');
       }
@@ -42,7 +42,15 @@ class _SoftwareEngJobsPageState extends State<SoftwareEngJobsPage>{
             trailing: Text('\$${j.avgSalary}'),
           );
         },
-        //DELETE ABOVE ^^^^^^^^
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(icon: Icon(Icons.list), label: 'List'),
+          BottomNavigationBarItem(icon: Icon(Icons.filter_list), label: 'Filter'),
+          BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Search'),
+        ],
+        //currentIndex: _selectedIndex,
+        //onTap: _onItemTapped,
       ),
 
     );
