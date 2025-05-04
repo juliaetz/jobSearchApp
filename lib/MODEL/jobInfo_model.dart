@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-//import 'package:stress_managment_app/firebase_logic.dart';
+//import 'package:stress_managment_app/account_firebase_logic.dart';
 
 class JobInfoModel{
   int _pageIndex = 0;

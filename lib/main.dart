@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:final_project/VIEW/jobHomePage.dart';
 import 'package:final_project/VIEW/darkTheme.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'auth_gate.dart';
+import 'package:final_project/VIEW/account_screens/sign_in_view.dart';
+import 'package:final_project/VIEW/account_screens/sign_up_view.dart';
 
 
 void main() async {
@@ -55,7 +57,10 @@ class MyApp extends StatelessWidget {
       // PAGE ROUTES
       initialRoute: '/',
       routes: {
-        '/': (context) => JobHomePage(),
+        '/': (context) => AuthGate(),
+        '/home': (context) => JobHomePage(),
+        '/signin': (context) => SignInScreen(),
+        '/signup': (context) => SignUpScreen(),
       },
     );
   }

@@ -2,14 +2,15 @@ import 'package:final_project/PRESENTER/locations_presenter.dart';
 import 'package:final_project/VIEW/jobInfo_component.dart';
 import 'package:final_project/PRESENTER/jobInfo_presenter.dart';
 import 'package:final_project/VIEW/locations_component.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:final_project/VIEW/DATA_SCIENCE/dataScienceJobsPage.dart';
 import 'package:final_project/VIEW/SOFTWARE_ENG/softwareEngJobsPage.dart';
-import 'package:final_project/VIEW/profile_settings_page.dart';
 import 'package:final_project/VIEW/darkTheme.dart';
 
 import '../PRESENTER/jobInfo_presenter.dart';
+import 'account_screens/profile_settings_page.dart';
 
 
 class JobHomePage extends StatelessWidget {
@@ -137,6 +138,33 @@ class JobHomePage extends StatelessWidget {
               ),
             ),
           ),
+
+          SizedBox(height: 20),
+
+
+          // TEMPORARY BUTTON TO SIGN OUT
+          ElevatedButton.icon(
+            onPressed: () async {
+              FirebaseAuth.instance.signOut();
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                '/signin',
+                    (Route<dynamic> route) => false,
+              );
+              // Optionally, navigate back to the login screen or perform other actions
+            },
+            icon: Icon(Icons.logout),
+            label: Text(
+              "Sign Out",
+              style: TextStyle(
+                fontSize: 15,
+              ),
+            ),
+            style: ElevatedButton.styleFrom(
+              padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+            ),
+          ),
+
 
           SizedBox(height: 50),
 
