@@ -90,7 +90,7 @@ class _ResourcesPageState extends State<ResourcesPage> implements ResourcesView 
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _isLoading ? null : AppBar(
-          backgroundColor: Colors.grey,
+          backgroundColor: Colors.green,
           title: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -103,7 +103,7 @@ class _ResourcesPageState extends State<ResourcesPage> implements ResourcesView 
 
 
       bottomNavigationBar: _isLoading ? null: BottomNavigationBar(
-        backgroundColor: Colors.deepPurple.shade700,
+        backgroundColor: Colors.green,
         iconSize: 30.0,
 
         selectedIconTheme: IconThemeData(color: Colors.white),
@@ -217,7 +217,7 @@ class _ResourcesPageState extends State<ResourcesPage> implements ResourcesView 
                   },
                   icon: Icon(
                     (_isFavorited[index] == true ? Icons.favorite : Icons
-                        .favorite_border), color: Colors.deepPurple.shade700,
+                        .favorite_border), color: Colors.green.shade700,
                     size: 30.0,),
                 ),
             ],
