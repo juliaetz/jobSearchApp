@@ -57,10 +57,39 @@ class _CompletedGoalsPageState extends State<CompletedGoalsPage> {
 
                             ),
                             trailing: IconButton(
-                                onPressed: (){
-                                  presenter.deleteGoal(goal.id);
-                                },
-                                icon: Icon(Icons.delete, color: Colors.red.shade800,),
+                                icon: Icon(Icons.delete),
+                                color: Colors.red.shade800,
+                                onPressed: () async {
+                                  bool? confirm = await showDialog<bool>(
+                                    context: context,
+                                    builder: (BuildContext context){
+                                      return AlertDialog(
+                                        title: Text('Confirm Goal Deletion'),
+                                        content: Text('Are you sure you want to delete this goal?'),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            child: Text('Cancel'),
+                                            onPressed: (){
+                                              Navigator.of(context).pop(false);
+                                            },
+                                          ),
+                                          TextButton(
+                                            child: Text('Delete'),
+                                            onPressed: (){
+                                              Navigator.of(context).pop(true);
+                                            },
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                  if(confirm == true){
+                                    await presenter.deleteGoal(goal.id!);
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(content: Text('Entry deleted!')),
+                                    );
+                                  }
+                                }
                             ),
                           ),
                         );
