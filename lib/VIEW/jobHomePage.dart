@@ -26,7 +26,7 @@ class JobHomePage extends StatelessWidget {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text("Welcome to your Job Search!"),
+            Text("Welcome to the Job Search!"),
           ],
         ),
       ),
@@ -152,7 +152,7 @@ class JobHomePage extends StatelessWidget {
             )
           ),
 
-        SizedBox(height: 50),
+        SizedBox(height: 90),
 
           // BUTTON TO GO TO PROFILE AND SETTINGS PAGE
           ElevatedButton.icon(
@@ -173,7 +173,7 @@ class JobHomePage extends StatelessWidget {
             ),
           ),
 
-          SizedBox(height: 10),
+          SizedBox(height: 45),
 
 
 
