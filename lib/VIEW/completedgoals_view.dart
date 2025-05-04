@@ -48,7 +48,13 @@ class _CompletedGoalsPageState extends State<CompletedGoalsPage> {
                           ),
                           child: ListTile(
                             title: Text(goal.goal, style: TextStyle(fontWeight: FontWeight.bold)),
-                            subtitle: GoalType.shortTerm == goal.goalType ? Text('Short-Term') : Text('Long-Term'),
+                            subtitle: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('Type: ${goal.goalType == GoalType.shortTerm ? 'Short-Term' : 'Long-Term'}'),
+                                Text('Completed on: ${goal.completionDate.toString()}'),
+                              ],
+                            ),
                           ),
                         );
                       }
