@@ -98,49 +98,58 @@ class JobHomePage extends StatelessWidget {
           SizedBox(height: 55),
 
 
-          // GO TO LOCATIONS PAGE (OR JOB INFO PAGE? WHICHEVER ONE FIRST?)
-          ElevatedButton(
-            onPressed: (){
-              Navigator.push(context, MaterialPageRoute(
-                builder: (context) => JobInfoPage(BasicJobInfoPresenter(), title: 'INFO', key: const Key('INFO')),
-                //builder: (context) => JobInfoPage(JobInfoPresenter(), key: key, title: "Job Information"),
-              ));
-            },
-            style: ElevatedButton.styleFrom(
-              padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
-            ),
-            child: Text(
-              "FIND MORE JOB INFO HERE!",
-              style: TextStyle(fontSize: 15),
-            )
-          ),
-
-          SizedBox(height: 20),
-
-          //Button to do to the career goals page
-          ElevatedButton.icon(
-              //Currently goes to the settings page as a placeholder CHANGE WHEN CAREER GOALS PAGE IS FUNCTIONAL
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => CareerGoalsPage(),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Expanded(
+                  // BUTTON TO JOB INFO PAGE
+                  child: ElevatedButton.icon(
+                    onPressed: (){
+                      Navigator.push(context, MaterialPageRoute(
+                          builder: (context) => JobInfoPage(BasicJobInfoPresenter(), title: 'INFO', key: const Key('INFO'))));
+                      },
+                    style: ElevatedButton.styleFrom(
+                      padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+                    ),
+                    icon: Icon(Icons.mail),
+                    label: Text("More Job Info", style: TextStyle(fontSize: 15)),
                   ),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
-              ),
-              label: Text(
-                  "Career Goals",
-                style: TextStyle(
-                  fontSize: 15,
                 ),
-              ),
-              icon: Icon(Icons.work_outline_outlined)
 
+                SizedBox(width: 15),
+
+
+                Expanded(
+                  //Button to do to the career goals page
+                  child: ElevatedButton.icon(
+                    //Currently goes to the settings page as a placeholder CHANGE WHEN CAREER GOALS PAGE IS FUNCTIONAL
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => CareerGoalsPage(),
+                          ),
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+                      ),
+                      label: Text(
+                        "Career Goals",
+                        style: TextStyle(
+                          fontSize: 15,
+                        ),
+                      ),
+                      icon: Icon(Icons.work_outline_outlined)
+                  ),
+
+                ),
+              ],
+            )
           ),
 
         SizedBox(height: 50),
