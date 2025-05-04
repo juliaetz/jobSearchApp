@@ -138,34 +138,6 @@ class JobHomePage extends StatelessWidget {
               ),
             ),
           ),
-
-          SizedBox(height: 20),
-
-
-          // TEMPORARY BUTTON TO SIGN OUT
-          ElevatedButton.icon(
-            onPressed: () async {
-              FirebaseAuth.instance.signOut();
-              Navigator.of(context).pushNamedAndRemoveUntil(
-                '/signin',
-                    (Route<dynamic> route) => false,
-              );
-              // Optionally, navigate back to the login screen or perform other actions
-            },
-            icon: Icon(Icons.logout),
-            label: Text(
-              "Sign Out",
-              style: TextStyle(
-                fontSize: 15,
-              ),
-            ),
-            style: ElevatedButton.styleFrom(
-              padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
-            ),
-          ),
-
-
           SizedBox(height: 50),
 
 
