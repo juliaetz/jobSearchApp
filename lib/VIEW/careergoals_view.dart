@@ -34,7 +34,7 @@ class _CareerGoalsPageState extends State<CareerGoalsPage> {
                     }else if(!snapshot.hasData || snapshot.data!.isEmpty){
                       return Center(child: Text('No entries yet!'));
                     }
-                    List<CareerGoal> goals = snapshot.data!;
+                    List<CareerGoal> goals = snapshot.data!.where((goal) => !goal.isCompleted).toList();
                     return ListView.builder(
                       itemCount: goals.length,
                       itemBuilder: (context, index){
@@ -54,6 +54,12 @@ class _CareerGoalsPageState extends State<CareerGoalsPage> {
                                 Text('Type: ${goal.goalType == GoalType.shortTerm ? 'Short-Term' : 'Long-Term'}'),
                                 Text('Created on: ${goal.creationDate.toString()}'),
                               ],
+                            ),
+                            trailing: IconButton(
+                                onPressed: (){
+                                  presenter.completeGoal(goal.id);
+                                },
+                                icon: Icon(Icons.check_circle, color: Colors.green)
                             ),
                           ),
                         );
