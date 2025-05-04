@@ -34,7 +34,7 @@ class _CompletedGoalsPageState extends State<CompletedGoalsPage> {
                   }else if(!snapshot.hasData || snapshot.data!.isEmpty){
                     return Center(child: Text('No entries yet!'));
                   }
-                  List<CareerGoal> goals = snapshot.data!;
+                  List<CareerGoal> goals = snapshot.data!.where((goal) => goal.isCompleted).toList();
                   return ListView.builder(
                       itemCount: goals.length,
                       itemBuilder: (context, index){
