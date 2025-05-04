@@ -54,6 +54,13 @@ class _CompletedGoalsPageState extends State<CompletedGoalsPage> {
                                 Text('Type: ${goal.goalType == GoalType.shortTerm ? 'Short-Term' : 'Long-Term'}'),
                                 Text('Completed on: ${goal.completionDate.toString()}'),
                               ],
+
+                            ),
+                            trailing: IconButton(
+                                onPressed: (){
+                                  presenter.deleteGoal(goal.id);
+                                },
+                                icon: Icon(Icons.delete, color: Colors.red.shade800,),
                             ),
                           ),
                         );

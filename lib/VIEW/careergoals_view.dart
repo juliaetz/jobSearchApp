@@ -55,11 +55,23 @@ class _CareerGoalsPageState extends State<CareerGoalsPage> {
                                 Text('Created on: ${goal.creationDate.toString()}'),
                               ],
                             ),
-                            trailing: IconButton(
-                                onPressed: (){
-                                  presenter.completeGoal(goal.id);
-                                },
-                                icon: Icon(Icons.check_circle, color: Colors.green)
+                            trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                IconButton(
+                                    onPressed: (){
+                                      presenter.completeGoal(goal.id);
+                                    },
+                                    icon: Icon(Icons.check_circle, color: Colors.green)
+                                ),
+                                IconButton(
+                                  icon: Icon(Icons.delete),
+                                  color: Colors.red.shade800,
+                                  onPressed: (){
+                                    presenter.deleteGoal(goal.id);
+                                  },
+                                ),
+                              ],
                             ),
                           ),
                         );
