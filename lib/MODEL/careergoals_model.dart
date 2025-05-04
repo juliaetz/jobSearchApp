@@ -25,7 +25,7 @@ class CareerGoal{
     return {
       'goal': goal,
       'goalType': goalType.name,
-      'createdAt': creationDate != null ? Timestamp.fromDate(creationDate!) : null,
+      'creationDate': creationDate != null ? Timestamp.fromDate(creationDate!) : null,
       'isCompleted': isCompleted,
       'completionDate': completionDate != null ? Timestamp.fromDate(completionDate!) : null,
     };
