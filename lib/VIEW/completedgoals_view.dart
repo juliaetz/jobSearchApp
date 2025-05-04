@@ -183,12 +183,16 @@ class _CompletedGoalsPageState extends State<CompletedGoalsPage> {
         currentIndex: 1,
         onTap: (index) {
           if(index == 0){
-            Navigator.pop(context);
-            Navigator.push(context, MaterialPageRoute(builder: (context) => CareerGoalsPage()));
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => CareerGoalsPage()),
+            );
           }
           if(index == 1){
-            Navigator.pop(context);
-            Navigator.push(context, MaterialPageRoute(builder: (context) => CompletedGoalsPage()));
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => CompletedGoalsPage()),
+            );
           }
         },
         items: [
