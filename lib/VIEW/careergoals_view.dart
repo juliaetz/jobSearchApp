@@ -55,6 +55,75 @@ class _CareerGoalsPageState extends State<CareerGoalsPage> {
                   },
                 ),
             ),
+            ElevatedButton(
+              onPressed: (){
+                String input = '';
+                GoalType selectedType = GoalType.shortTerm;
+
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context){
+                    return AlertDialog(
+                      title: Text('Add Career Goal'),
+                      content:Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          TextField(
+                            onChanged: (value){
+                              input = value;
+                            },
+                            decoration: InputDecoration(
+                              hintText: 'Enter your goal',
+                            ),
+                          ),
+                          SizedBox(height: 10),
+                          DropdownButton<GoalType>(
+                            value: selectedType,
+                            items: GoalType.values.map((GoalType type) {
+                              return DropdownMenuItem<GoalType>(
+                                value: type,
+                                child: Text(type == GoalType.shortTerm ? 'Short-Term' : 'Long-Term'),
+                              );
+                            }).toList(),
+                            onChanged: (GoalType? newValue){
+                              if(newValue != null){
+                                setState(() {
+                                  selectedType = newValue;
+                                });
+                              }
+                            }
+                          ),
+                        ],
+                      ),
+                      actions: [
+                        TextButton(
+                          onPressed: (){
+                            Navigator.of(context).pop();
+                          },
+                          child: Text('Cancel'),
+                        ),
+                        ElevatedButton(
+                          child: Text('Save'),
+                          onPressed: (){
+                            presenter.addCareerGoal(
+                              CareerGoal(
+                                id: '',
+                                goal: input,
+                                goalType: selectedType,
+                                creationDate: DateTime.now(),
+                                isCompleted: false,
+                                completionDate: null
+                              )
+                            );
+                          },
+                        )
+                      ]
+                    );
+                  }
+                );
+              },
+              child: Text("Add Goal"),
+            ),
           ],
         ),
       ),
