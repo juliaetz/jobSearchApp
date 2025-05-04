@@ -7,7 +7,7 @@ class CareerGoal{
   final GoalType goalType;
   final DateTime? creationDate;
   final bool isCompleted;
-  final DateTime completionDate;
+  final DateTime? completionDate;
 
 
   CareerGoal({
@@ -27,7 +27,7 @@ class CareerGoal{
       'goalType': goalType.name,
       'createdAt': creationDate != null ? Timestamp.fromDate(creationDate!) : null,
       'isCompleted': isCompleted,
-      'completionDate': Timestamp.fromDate(completionDate),
+      'completionDate': completionDate != null ? Timestamp.fromDate(completionDate!) : null,
     };
 
   }
@@ -37,7 +37,7 @@ class CareerGoal{
           !map.containsKey('goalType') ||
           !map.containsKey('completionDate') ||
           !map.containsKey('isCompleted') ||
-          !map.containsKey('createdAt')){
+          !map.containsKey('creationDate')){
         throw Exception('Invalid career goal data');
       }
 
@@ -45,9 +45,9 @@ class CareerGoal{
         id: id,
         goal: map['goal'] ?? '',
         goalType: GoalType.values.firstWhere((type) => type.name == map['goalType']),
-        creationDate: map['createdAt'] != null ? (map['createdAt'] as Timestamp).toDate() : null,
+        creationDate: map['creationDate'] != null ? (map['creationDate'] as Timestamp).toDate() : null,
         isCompleted: map['isCompleted'],
-        completionDate: (map['completionDate'] as Timestamp).toDate(),
+        completionDate: map['completionDate'] != null ? (map['completionDate'] as Timestamp).toDate() : null,
       );
   }
 
