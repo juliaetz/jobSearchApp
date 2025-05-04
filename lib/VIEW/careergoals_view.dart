@@ -129,6 +129,15 @@ class _CareerGoalsPageState extends State<CareerGoalsPage> {
                         ElevatedButton(
                           child: Text('Save'),
                           onPressed: (){
+                            if(input.isEmpty){
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text('Goal cannot be empty!')),
+                              );
+                              return;
+                            }
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('Goal added!')),
+                            );
                             presenter.addCareerGoal(
                               CareerGoal(
                                 id: '',
@@ -139,6 +148,7 @@ class _CareerGoalsPageState extends State<CareerGoalsPage> {
                                 completionDate: null
                               )
                             );
+                            Navigator.of(context).pop();
                           },
                         )
                       ]
