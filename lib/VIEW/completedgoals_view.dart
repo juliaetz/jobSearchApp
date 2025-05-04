@@ -43,7 +43,7 @@ class _CompletedGoalsPageState extends State<CompletedGoalsPage> {
                           margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                           padding: EdgeInsets.all(10),
                           decoration: BoxDecoration(
-                            color:Colors.greenAccent,
+                            color:Colors.greenAccent.shade100,
                             borderRadius:BorderRadius.circular(15),
                           ),
                           child: ListTile(
