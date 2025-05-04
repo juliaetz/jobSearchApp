@@ -70,6 +70,30 @@ class _SignUpScreenState extends State<SignUpScreen> {
     }
   }
 
+
+  // LOG IN AS GUEST WITH OR WITHOUT ADMIN
+  Future<void> _signInAsGuest() async {
+    setState(() {
+      _isLoading = true;
+    });
+    try{
+      await FirebaseAuth.instance.signInAnonymously();
+      Navigator.of(context).pushNamedAndRemoveUntil('/home', (Route<dynamic> route) => false);
+    }
+    on FirebaseAuthException catch (e){
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to sign in as guest: ${e.message}')),
+      );
+    }
+    finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -94,7 +118,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
               ),
               Text(
-                'That\'s okay, Find your next job here',
+                'That\'s okay, Find your next job here.',
                 style: TextStyle(
                   fontSize: 20,
                 ),
@@ -144,7 +168,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 ),
                               ),
                             ),
-                            const SizedBox(height: 20),
+                            const SizedBox(height: 10),
                             Form(
                               key: _formKey,
                               child: Column(
@@ -164,7 +188,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       return null;
                                     },
                                   ),
-                                  const SizedBox(height: 20),
+                                  const SizedBox(height: 10),
                                   TextFormField(
                                     controller: _lastNameController,
                                     decoration: const InputDecoration(
@@ -178,7 +202,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       return null;
                                     },
                                   ),
-                                  const SizedBox(height: 20),
+                                  const SizedBox(height: 10),
                                   TextFormField(
                                     controller: _emailController,
                                     decoration: const InputDecoration(
@@ -196,7 +220,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       return null;
                                     },
                                   ),
-                                  const SizedBox(height: 20),
+                                  const SizedBox(height: 10),
                                   TextFormField(
                                     controller: _passwordController,
                                     decoration: InputDecoration(
@@ -220,7 +244,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       return null;
                                     },
                                   ),
-                                  const SizedBox(height: 20),
+                                  const SizedBox(height: 10),
                                   TextFormField(
                                     controller: _confirmPasswordController,
                                     decoration: InputDecoration(
@@ -244,11 +268,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       return null;
                                     },
                                   ),
-                                  const SizedBox(height: 20),
+                                  const SizedBox(height: 10),
                                   ElevatedButton(
                                     onPressed: _signUpWithEmailAndPassword,
                                     child: const Text('Sign Up'),
                                   ),
+
+                                  const SizedBox(height: 3),
+                                  Text('or', style: TextStyle(fontSize: 16)),
+                                  const SizedBox(height: 3),
+                                  OutlinedButton(
+                                      onPressed: _signInAsGuest,
+                                      child: const Text('Sign in as Guest')),
                                 ],
                               ),
                             ),

@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:final_project/VIEW/account_screens/sign_in_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:final_project/VIEW/darkTheme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -23,8 +22,8 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
 
   // GET PERMISSION TO ACCESS PHOTOS AND THEN CHANGE PROFILE PICTURE
   File? _profileImage;
+  String? _profileImageUrl;
   String? _assetProfileImagePath;
-  final picker = ImagePicker();
 
 
   // KEEP IMAGE ON PROFILE EVERY TIME APP LOADS
@@ -35,49 +34,62 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
     _fetchCurrentUser();
   }
 
-  Future<void> _loadProfileImage() async{
-    final prefs = await SharedPreferences.getInstance();
-    final path = prefs.getString('profileImagePath');
-    final assetPath = prefs.getString('assetProfileImagePath');
-
-    setState(() {
-      if(path != null){
-        _profileImage = File(path);
-        _assetProfileImagePath = null;
-      }
-      else if (assetPath != null){
-        _assetProfileImagePath = assetPath;
-        _profileImage = null;
-      }
-    });
-  }
-
 
   // SAVE IMAGE TO PROFILE
   Future<void> _saveProfileImage() async{
     final prefs = await SharedPreferences.getInstance();
-    if(_profileImage != null){
-      await prefs.setString('profileImagePath', _profileImage!.path);
-      await prefs.remove('assetProfileImagePath');
-    }
-    else if (_assetProfileImagePath != null){
-      await prefs.setString('assetProfileImagePath', _assetProfileImagePath!);
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    if(uid == null) return;
+
+    if(_assetProfileImagePath != null){
+      final userDocRef = await fire_base_logic.getUserDocument();
+      await userDocRef.update({'profilePictureAsset': _assetProfileImagePath, 'profilePictureUrl':null});
+
       await prefs.remove('profileImagePath');
+      await prefs.setString('assetProfileImagePath', _assetProfileImagePath!);
     }
 
-    if (mounted){
+    if(mounted){
       Future.delayed(Duration(milliseconds: 300), (){
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Profile picture saved!')),
-        );
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Profile picture saved!')),);
       });
     }
   }
 
 
+  // LOAD IMAGE
+  Future<void> _loadProfileImage() async{
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    if(uid == null) return;
+
+    final userDocRef = await fire_base_logic.getUserDocument();
+    final userData = await userDocRef.get();
+
+    final profileUrl = userData['profilePictureUrl'];
+    final assetPath = userData['profilePictureAsset'];
+
+
+    setState(() {
+      if(profileUrl != null && profileUrl != ''){
+        _profileImageUrl = profileUrl;
+        _assetProfileImagePath = null;
+      }
+      else if (assetPath != null && assetPath != ''){
+        _assetProfileImagePath = assetPath;
+        _profileImageUrl = null;
+      }
+      else {
+        _profileImageUrl = null;
+        _assetProfileImagePath = null;
+      }
+    });
+  }
+
+
+
   // SAMPLE IMAGES FOR PROFILE PICTURE
   // ALL FOUND ON PINTEREST!
-  Future<void> _pickImage() async{
+  Future<void> _pickImage() async {
     final sampleImages = [
       'assets/images/burningComputerCat.jpg',
       'assets/images/vacationCat.jpg',
@@ -86,72 +98,44 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
     ];
 
 
-
-    // PICK IMAGES FROM GALLERY OR SAMPLE IMAGES
     showModalBottomSheet(
-        context: context,
-        builder: (context) => Container(
-          padding: EdgeInsets.all(16),
-          height: 250,
-          child: GridView.count(
-            crossAxisCount: 3,
-            children: [
-              // OPTION TO ADD FROM GALLERY
+      context: context,
+      builder: (context) => Container(
+        padding: EdgeInsets.all(16),
+        height: 250,
+        child: GridView.count(
+          crossAxisCount: 3,
+          children: [
+            for (var imagePath in sampleImages)
               GestureDetector(
-                onTap: () async{
-                  final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-                  if(pickedFile != null){
-                    setState(() {
-                      _profileImage = File(pickedFile.path);
-                      _assetProfileImagePath = null;
-                    });
+                onTap: () async {
+                  setState(() {
+                    _assetProfileImagePath = imagePath;
+                    _profileImageUrl = null;
+                  });
 
-                    Navigator.pop(context);
-                    await _saveProfileImage();
-                    await _loadProfileImage();
-                  }
+                  Navigator.pop(context);
+                  await _saveProfileImage();
+                  await _loadProfileImage();
                 },
                 child: Container(
+                  margin: EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: Colors.grey[200],
-                    borderRadius: BorderRadius.circular(8)
-                  ),
-                  child: Center(
-                    child: Icon(Icons.add, size: 40, color: Colors.grey[800]),
+                    borderRadius: BorderRadius.circular(8),
+                    image: DecorationImage(
+                      image: AssetImage(imagePath),
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
-              ),
-
-
-              // SAMPLE IMAGES
-              for (var imagePath in sampleImages)
-                GestureDetector(
-                  onTap: () async {
-                    setState(() {
-                      _assetProfileImagePath = imagePath;
-                      _profileImage = null;
-                    });
-
-                    Navigator.pop(context);
-                    await _saveProfileImage();
-                    await _loadProfileImage();
-                  },
-                  child: Container(
-                    margin: EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      image: DecorationImage(
-                        image: AssetImage(imagePath),
-                        fit: BoxFit.cover,
-                      )
-                    ),
-                  )
-                )
-            ],
-          )
-        )
+              )
+          ],
+        ),
+      ),
     );
+
   }
+
 
   // GET CURRENT USER (Google Gemini)
   User? _currentUser;
@@ -160,7 +144,6 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
     if (user != null) {
       setState(() {
         _currentUser = user;
-        print("Current user: ${user.uid}");
       });
     }
   }
@@ -289,6 +272,8 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
       );
     }
     }
+
+
   // LOG OUT (Google Gemini)
   Future<void> _signOut() async {
     try {
@@ -343,9 +328,11 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
                       radius: 50,
                       backgroundImage: _profileImage != null
                         ? FileImage(_profileImage!)
-                        : _assetProfileImagePath != null
-                          ? AssetImage(_assetProfileImagePath!) as ImageProvider
-                          : AssetImage('assets/avatar.png'),
+                        : _profileImageUrl != null
+                          ? NetworkImage(_profileImageUrl!)
+                          : _assetProfileImagePath != null
+                            ? AssetImage(_assetProfileImagePath!)
+                            : AssetImage('assets/avatar.png') as ImageProvider,
                     )
                   ),
                 ]
@@ -416,6 +403,17 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
               }
             ),
 
+
+            // LOG OUT
+            ListTile(
+              leading: Icon(Icons.logout),
+              title: Text('Log Out'),
+              onTap: () {
+                _signOut();
+              },
+            ),
+
+
             //Delete Account
             ListTile(
               leading: Icon(Icons.delete, color: Colors.red),
@@ -424,15 +422,6 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
               ),
               onTap: () {
                 _deleteAccountWithPassword();
-              },
-            ),
-
-            // LOG OUT
-            ListTile(
-              leading: Icon(Icons.logout),
-              title: Text('Log Out'),
-              onTap: () {
-                _signOut();
               },
             ),
 
