@@ -8,6 +8,7 @@ import 'package:final_project/VIEW/dataScienceJobsPage.dart';
 import 'package:final_project/VIEW/softwareEngJobsPage.dart';
 import 'package:final_project/VIEW/profile_settings_page.dart';
 import 'package:final_project/VIEW/darkTheme.dart';
+import 'package:final_project/VIEW/uncompletedgoals_view.dart';
 import 'package:final_project/VIEW/careergoals_view.dart';
 
 

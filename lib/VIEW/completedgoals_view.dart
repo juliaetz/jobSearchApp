@@ -1,6 +1,6 @@
 import 'package:final_project/MODEL/careergoals_model.dart';
 import 'package:final_project/PRESENTER/careergoals_presenter.dart';
-import 'package:final_project/VIEW/careergoals_view.dart';
+import 'package:final_project/VIEW/uncompletedgoals_view.dart';
 import 'package:flutter/material.dart';
 
 class CompletedGoalsPage extends StatefulWidget {
@@ -15,10 +15,6 @@ class _CompletedGoalsPageState extends State<CompletedGoalsPage> {
   @override
   Widget build(BuildContext context){
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.green,
-        title: Text("Career Goals"),
-      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -178,33 +174,6 @@ class _CompletedGoalsPageState extends State<CompletedGoalsPage> {
             ),
           ],
         ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: 1,
-        onTap: (index) {
-          if(index == 0){
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => CareerGoalsPage()),
-            );
-          }
-          if(index == 1){
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => CompletedGoalsPage()),
-            );
-          }
-        },
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Career Goals',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.done),
-            label: 'Completed Goals',
-          ),
-        ],
       ),
     );
   }
