@@ -1,5 +1,6 @@
 import 'package:final_project/MODEL/careergoals_model.dart';
 import 'package:final_project/PRESENTER/careergoals_presenter.dart';
+import 'package:final_project/VIEW/completedgoals_view.dart';
 import 'package:flutter/material.dart';
 
 class CareerGoalsPage extends StatefulWidget {
@@ -59,7 +60,6 @@ class _CareerGoalsPageState extends State<CareerGoalsPage> {
               onPressed: (){
                 String input = '';
                 GoalType selectedType = GoalType.shortTerm;
-
                 showDialog(
                   context: context,
                   builder: (BuildContext context){
@@ -126,6 +126,29 @@ class _CareerGoalsPageState extends State<CareerGoalsPage> {
             ),
           ],
         ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: 0,
+        onTap: (index) {
+          if(index == 0){
+            Navigator.pop(context);
+            Navigator.push(context, MaterialPageRoute(builder: (context) => CareerGoalsPage()));
+          }
+          if(index == 1){
+            Navigator.pop(context);
+            Navigator.push(context, MaterialPageRoute(builder: (context) => CompletedGoalsPage()));
+          }
+        },
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Career Goals',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.done),
+            label: 'Completed Goals',
+          ),
+        ],
       ),
     );
   }
