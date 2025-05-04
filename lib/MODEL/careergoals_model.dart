@@ -35,9 +35,7 @@ class CareerGoal{
   factory CareerGoal.fromMap(Map<String, dynamic> map, String id) {
       if(!map.containsKey('goal') ||
           !map.containsKey('goalType') ||
-          !map.containsKey('completionDate') ||
-          !map.containsKey('isCompleted') ||
-          !map.containsKey('creationDate')){
+          !map.containsKey('isCompleted')){
         throw Exception('Invalid career goal data');
       }
 
