@@ -9,6 +9,9 @@ class SoftwareEngJobsPage extends StatefulWidget{
 
 }
 
+
+// TEMPORARY TO DISPLAY DATA ON PAGE, MODIFY THIS FOR FILTERING!
+
 class _SoftwareEngJobsPageState extends State<SoftwareEngJobsPage>{
   final repo = JobRepository();
   List<Job> jobs = [];

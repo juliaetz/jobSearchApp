@@ -70,10 +70,13 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
 
 
   // SAMPLE IMAGES FOR PROFILE PICTURE
+  // ALL FOUND ON PINTEREST!
   Future<void> _pickImage() async{
     final sampleImages = [
       'assets/images/burningComputerCat.jpg',
       'assets/images/vacationCat.jpg',
+      'assets/images/employed_cat.jpg',
+      'assets/images/money_throw.jpg',
     ];
 
 
@@ -176,18 +179,6 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
                         : _assetProfileImagePath != null
                           ? AssetImage(_assetProfileImagePath!) as ImageProvider
                           : AssetImage('assets/avatar.png'),
-                    )
-                  ),
-
-                  SizedBox(height: 20),
-
-
-                  ElevatedButton.icon(
-                    onPressed: _saveProfileImage,
-                    icon: Icon(Icons.save),
-                    label: Text('Save profile picture'),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
                     )
                   ),
 
