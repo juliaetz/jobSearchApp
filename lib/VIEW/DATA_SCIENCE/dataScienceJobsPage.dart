@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import '../PRESENTER/load_data.dart';
-import '../MODEL/data_read.dart';
+import '../../PRESENTER/load_data.dart';
+import '../../MODEL/data_read.dart';
 import 'filter_jobs_in_data_view.dart';
 class DataScienceListView extends StatefulWidget {
   @override
   _DataScienceListViewState createState() => _DataScienceListViewState();
-
 }
+
+
 class _DataScienceListViewState extends State<DataScienceListView> {
   final repo = DataJobRepository();
   List<DataJob> jobs = [];
@@ -51,10 +52,13 @@ class _DataScienceListViewState extends State<DataScienceListView> {
       );
     }
   }
+
+
 class DataScienceJobsPage extends StatefulWidget {
   @override
   _DataScienceJobsPageState createState() => _DataScienceJobsPageState();
 }
+
 
 class _DataScienceJobsPageState extends State<DataScienceJobsPage> {
 

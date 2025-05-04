@@ -4,8 +4,8 @@ import 'package:final_project/PRESENTER/jobInfo_presenter.dart';
 import 'package:final_project/VIEW/locations_component.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:final_project/VIEW/dataScienceJobsPage.dart';
-import 'package:final_project/VIEW/softwareEngJobsPage.dart';
+import 'package:final_project/VIEW/DATA_SCIENCE/dataScienceJobsPage.dart';
+import 'package:final_project/VIEW/SOFTWARE_ENG/softwareEngJobsPage.dart';
 import 'package:final_project/VIEW/profile_settings_page.dart';
 import 'package:final_project/VIEW/darkTheme.dart';
 

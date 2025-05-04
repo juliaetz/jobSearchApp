@@ -1,13 +1,13 @@
 import 'package:final_project/PRESENTER/load_data.dart';
 import 'package:flutter/material.dart';
-import '../MODEL/data_read.dart';
+import '../../MODEL/data_read.dart';
+
 
 class SoftwareEngJobsPage extends StatefulWidget{
   @override
   _SoftwareEngJobsPageState createState() => _SoftwareEngJobsPageState();
 
 }
-
 
 class _SoftwareEngJobsPageState extends State<SoftwareEngJobsPage>{
   final repo = JobRepository();
@@ -40,7 +40,6 @@ class _SoftwareEngJobsPageState extends State<SoftwareEngJobsPage>{
           );
         },
       ),
-
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(icon: Icon(Icons.list), label: 'List'),

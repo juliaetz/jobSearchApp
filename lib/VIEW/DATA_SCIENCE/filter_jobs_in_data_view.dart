@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../model/filter_jobs_in_data_model.dart';
-import '../presenter/filter_jobs_in_data_presenter.dart';
+import '../../model/filter_jobs_in_data_model.dart';
+import '../../presenter/filter_jobs_in_data_presenter.dart';
 
 class FilterJobsInDataView extends StatefulWidget {
   @override
