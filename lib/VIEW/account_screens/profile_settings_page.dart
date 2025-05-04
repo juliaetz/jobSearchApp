@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:final_project/VIEW/darkTheme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../auth_gate.dart';
 import '../../account_firebase_logic.dart' as fire_base_logic;
@@ -85,6 +86,22 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
     });
   }
 
+  Future<void> _pickCustomImage() async{
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    if(pickedFile != null){
+      setState(() {
+        _profileImage = File(pickedFile.path);
+        _assetProfileImagePath = null;
+        _profileImageUrl = null;
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Custom image selected!")),
+      );
+    }
+  }
+
 
 
   // SAMPLE IMAGES FOR PROFILE PICTURE
@@ -112,6 +129,7 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
                   setState(() {
                     _assetProfileImagePath = imagePath;
                     _profileImageUrl = null;
+                    _profileImage = null;
                   });
 
                   Navigator.pop(context);
@@ -128,7 +146,23 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
                     ),
                   ),
                 ),
+              ),
+
+            // PLUS ICON FOR IMAGE FROM GALLERY
+            GestureDetector(
+              onTap: () async{
+                Navigator.pop(context);
+                await _pickCustomImage();
+              },
+              child: Container(
+                margin: EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  color: Colors.grey[300],
+                ),
+                child: Icon(Icons.add, size: 40),
               )
+            )
           ],
         ),
       ),
@@ -317,27 +351,32 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
 
             // PROFILE SECTION
             Container(
-
               // PROFILE PICTURE
               padding: EdgeInsets.all(30),
               child: Column(
                 children: [
-                  GestureDetector(
-                    onTap: _pickImage,
-                    child: CircleAvatar(
-                      radius: 50,
-                      backgroundImage: _profileImage != null
-                        ? FileImage(_profileImage!)
-                        : _profileImageUrl != null
-                          ? NetworkImage(_profileImageUrl!)
-                          : _assetProfileImagePath != null
-                            ? AssetImage(_assetProfileImagePath!)
-                            : AssetImage('assets/avatar.png') as ImageProvider,
-                    )
+                  Stack(
+                    alignment: Alignment.bottomRight,
+                    children: [
+                      GestureDetector(
+                        onTap: _pickImage,
+                        child: CircleAvatar(
+                          radius: 50,
+                          backgroundImage: _profileImage != null
+                            ? FileImage(_profileImage!)
+                            : _profileImageUrl != null
+                              ? NetworkImage(_profileImageUrl!)
+                              : _assetProfileImagePath != null
+                                ? AssetImage(_assetProfileImagePath!)
+                                : AssetImage('assets/avatar.png') as ImageProvider,
+                      ),
+                    ),
+                    ],
                   ),
                 ]
               ),
             ),
+
 
 
 

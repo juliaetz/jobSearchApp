@@ -318,7 +318,7 @@ class _ResourcesPageState extends State<ResourcesPage> implements ResourcesView 
                     handlePageChange(_selectedIndex);
                   });
                 },
-                icon: Icon(Icons.delete, color: Colors.deepPurple.shade700,
+                icon: Icon(Icons.delete, color: Colors.green,
                   size: 30.0,),
               ),
             ],
