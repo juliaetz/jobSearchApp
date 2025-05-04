@@ -80,7 +80,7 @@ class _CompletedGoalsPageState extends State<CompletedGoalsPage> {
                                     },
                                   );
                                   if(confirm == true){
-                                    await presenter.deleteGoal(goal.id!);
+                                    await presenter.deleteGoal(goal.id);
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(content: Text('Entry deleted!')),
                                     );
