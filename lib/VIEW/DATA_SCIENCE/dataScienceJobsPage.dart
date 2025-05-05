@@ -14,9 +14,6 @@ class _DataScienceListViewState extends State<DataScienceListView> {
   List<DataJob> jobs = [];
   Map<int, bool> _isFavorited = <int,bool>{};
 
-  handleFavorite(int? index, List<String>? data, String? dataType){
-
-  }
 
   late DataJobsPresenter presenter;
 
