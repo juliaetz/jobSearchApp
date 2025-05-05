@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
+import 'data_read.dart';
 //import 'package:stress_managment_app/account_firebase_logic.dart';
 
 class JobInfoModel{
-  int _pageIndex = 0;
-
-  int get pageIndex => _pageIndex;
-  set pageIndex(int setValue){
-    _pageIndex = setValue;
-  }
+  CollectionReference jobsDatabaseReference = FirebaseFirestore.instance.collection('Favorite_Jobs');
+  Map<String,favoriteJob> favoritesList = <String,favoriteJob>{};
 
 
   /*Future<void> initializeFavIdeasDatabaseRef() async {
