@@ -25,4 +25,26 @@ class FilterJobsInSoftwareModel {
       return MapEntry(city, avg);
     });
   }
+
+  filterJobsByCityOrSalary({String? city, String? salaryRange}) {
+    return jobs.where((job) {
+      final matchesCity = city == null || job.location == city;
+
+      final salary = job.avgSalary ?? 0;
+      bool matchesSalary = true;
+      if (salaryRange != null) {
+        if (salaryRange == '< \$50k') {
+          matchesSalary = salary < 50000;
+        } else if (salaryRange == '\$50k - \$100k') {
+          matchesSalary = salary >= 50000 && salary <= 100000;
+        } else if (salaryRange == '\$100k - \$150k') {
+          matchesSalary = salary > 100000 && salary <= 150000;
+        } else if (salaryRange == '> \$150k') {
+          matchesSalary = salary > 150000;
+        }
+      }
+
+      return matchesCity && matchesSalary;
+    }).toList();
+  }
 }
