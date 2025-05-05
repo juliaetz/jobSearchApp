@@ -24,7 +24,7 @@ class _LocationsPageState extends State<LocationsPage> implements LocationsView 
   }
 
   bool _isLoading = true;
-  Widget _page = JobInfoPage(BasicJobInfoPresenter(), title: '', key: const Key(''));
+  Widget _page = Center(child: CircularProgressIndicator());
   int _selectedIndex = 0;
   List<String> _topDataLocations = ["USA", "UK", "Canada", "Spain", "Germany", "France", "Australia", "Portugal", "Netherlands", "Brazil"];
   List<String> _topSoftwareLocations = ["Remote", "Annapolis Junction", "Seattle", "San Francisco", "Boston", "San Jose", "New York", "Chicago", "Bellevue", "Atlanta"];
