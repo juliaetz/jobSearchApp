@@ -54,7 +54,7 @@ class _SoftwareEngJobsPageState extends State<SoftwareEngJobsPage> {
         // 2) Filter by location/company
         FilterJobsInSoftwareView(),
         // 3) Search
-        JobSearchTab(allJobs: jobs),
+        SoftEngJobSearchTab(allJobs: jobs),
       ];
       content = tabs[_selectedIndex];
     }
