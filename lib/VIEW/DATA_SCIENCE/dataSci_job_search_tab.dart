@@ -86,7 +86,7 @@ class _DataSciJobSearchTabState extends State<DataSciJobSearchTab>{
                   final job = filteredJobs[i];
                   return ListTile(
                     title: Text(job.jobTitle),
-                    subtitle: Text('${job.jobCategory} • ${job.workSetting}'),
+                    subtitle: Text('${job.companyLocation} • ${job.employmentType}'),
                     trailing: Text('\$${job.salary}'),
                   );
                 }
