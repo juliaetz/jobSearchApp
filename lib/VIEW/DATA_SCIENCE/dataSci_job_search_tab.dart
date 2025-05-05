@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../MODEL/data_read.dart';
+import '../../PRESENTER/dataScienceJobs_presenter.dart';
 
 
 /*
@@ -19,11 +20,32 @@ class DataSciJobSearchTab extends StatefulWidget {
 class _DataSciJobSearchTabState extends State<DataSciJobSearchTab>{
   late List<DataJob> filteredJobs;
   String workSetting = "Any";
+  Map<DataJob,int> originalIndex = <DataJob,int>{};
+  Map<int,bool> _isFavorited = <int,bool>{};
+  bool _isLoading = true;
+
+  late DataJobsPresenter presenter;
 
   @override
   void initState() {
     super.initState();
     filteredJobs = widget.allJobs;
+
+    int index = 0;
+    for(DataJob j in widget.allJobs){
+      originalIndex[j] = index;
+      index++;
+    }
+
+    presenter = DataJobsPresenter();
+    initData();
+  }
+
+  void initData() async {
+    _isFavorited = await presenter.setMaps();
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   void _filterJobs(String query) {
@@ -89,14 +111,30 @@ class _DataSciJobSearchTabState extends State<DataSciJobSearchTab>{
 
         // DISPLAY JOB INFORMATION
         Expanded(
-            child: ListView.builder(
+            child: _isLoading ? Center(child: CircularProgressIndicator()) : ListView.builder(
                 itemCount: filteredJobs.length,
                 itemBuilder: (_, i){
                   final job = filteredJobs[i];
                   return ListTile(
-                    title: Text(job.jobTitle),
+                    title: Text('${job.jobTitle} • \$${job.salary}'),
                     subtitle: Text('${job.companyLocation} • ${job.employmentType}'),
-                    trailing: Text('\$${job.salary}'),
+                    //trailing: Text('\$${job.salary}'),
+                    trailing: IconButton(
+                      onPressed: () {
+                        updateData() async {
+                          _isFavorited = await presenter.updateFavoriteData(
+                          originalIndex[job]!, job);
+                        }
+
+                        setState(() {
+                          updateData();
+                        });
+                      },
+                    icon: Icon(
+                    (_isFavorited[originalIndex[job!]] == true ? Icons.favorite : Icons
+                        .favorite_border), color: Colors.green.shade700,
+                    size: 30.0,),
+                    ),
                   );
                 }
             )
