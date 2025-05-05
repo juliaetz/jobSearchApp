@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 import '../../MODEL/data_read.dart';
 
+/*
+to search for a job title from the database and see the company name, location,
+and salary as a result
+ */
+
+
 class JobSearchTab extends StatefulWidget{
   final List<Job> allJobs;
 
@@ -12,7 +18,6 @@ class JobSearchTab extends StatefulWidget{
 
 class _JobSearchTabState extends State<JobSearchTab> {
   late List<Job> filteredJobs;
-  final TextEditingController _searchController = TextEditingController();
 
   @override
   void initState() {
