@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../../PRESENTER/load_data.dart';
 import '../../MODEL/data_read.dart';
 import 'filter_jobs_in_data_view.dart';
-import '../../PRESENTER/dataScienceJobs_presenter.dart';
+import '../../presenter/dataScienceJobs_presenter.dart';
 class DataScienceListView extends StatefulWidget {
   @override
   _DataScienceListViewState createState() => _DataScienceListViewState();
@@ -31,12 +31,12 @@ class _DataScienceListViewState extends State<DataScienceListView> {
       }
     });
 
-    presenter = DataJobsPresenter();
-    initData();
-  }
-
-  void initData() async {
-    _isFavorited = await presenter.setMaps();
+    presenter = DataJobsPresenter(updateViewFavorites: (Map<int, bool> favorites) {
+      setState(() {
+        _isFavorited = favorites;
+      });
+    });
+    presenter.setMaps();
   }
 
     @override

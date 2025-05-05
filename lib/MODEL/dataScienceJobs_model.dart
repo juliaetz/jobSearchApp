@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '../account_firebase_logic.dart';
 
 import 'data_read.dart';
-//import 'package:stress_managment_app/account_firebase_logic.dart';
 
 class DataJobsModel{
   int _pageIndex = 0;
-  CollectionReference jobsDatabaseReference = FirebaseFirestore.instance.collection('Favorite_Jobs');
+  bool isJobsInitialized = false;
   Map<int,bool> favoritedData = <int,bool>{};
 
 
@@ -15,12 +15,9 @@ class DataJobsModel{
     _pageIndex = setValue;
   }
 
-
-  /*Future<void> initializeFavIdeasDatabaseRef() async {
+  Future<CollectionReference> getJobsDatabaseReference() async {
     final userDocRef = await getUserDocument();
-    favoritesDatabaseReference = userDocRef.collection('Favorite_Ideas');
-    eventsDatabaseReference = userDocRef.collection('events');
-  }*/
+    return userDocRef.collection('Favorite_Jobs');
+  }
   DataJobsModel();
-//initializeFavIdeasDatabaseRef();
 }

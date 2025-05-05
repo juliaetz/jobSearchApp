@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:final_project/VIEW/DATA_SCIENCE/dataScienceJobsPage.dart';
 import 'package:final_project/VIEW/SOFTWARE_ENG/softwareEngJobsPage.dart';
 import 'package:final_project/VIEW/darkTheme.dart';
-import 'package:final_project/VIEW/careergoals_view.dart';
+import 'package:final_project/VIEW/CAREER_GOALS/careergoals_view.dart';
 
 import '../PRESENTER/jobInfo_presenter.dart';
 import 'account_screens/profile_settings_page.dart';

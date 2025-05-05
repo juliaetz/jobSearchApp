@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:final_project/MODEL/dataScienceJobs_model.dart';
+import 'package:final_project/model/dataScienceJobs_model.dart';
 import 'package:final_project/VIEW/jobInfo_view.dart';
 import 'package:final_project/VIEW/DATA_SCIENCE/dataScienceJobsPage.dart';
 
@@ -12,29 +12,30 @@ import '../model/filter_jobs_in_data_model.dart';
 
 class DataJobsPresenter{
   late DataJobsModel _viewModel;
-  DataJobsPresenter(){
+  final Function(Map<int, bool>) updateViewFavorites;
+  DataJobsPresenter({required this.updateViewFavorites}){
     this._viewModel = DataJobsModel();
   }
 
-  Future<Map<int,bool>> setMaps() async {
-    await _viewModel.jobsDatabaseReference.get().then((results){
+  Future<void> setMaps() async {
+    CollectionReference jobsDatabaseRef = await _viewModel.getJobsDatabaseReference();
+      await jobsDatabaseRef.get().then((results){
       for(DocumentSnapshot docs in results.docs){
         if(docs["Job_Type"] == "Data Science") {
           _viewModel.favoritedData[docs.get("Index")] = true;
         }
       }
     });
-
-    return _viewModel.favoritedData;
+      updateViewFavorites(_viewModel.favoritedData);
   }
 
 
 
   Future<Map<int, bool>> updateFavoriteData(int index, DataJob data) async {
     updateBool(index);
-
+    CollectionReference jobsDatabaseRef = await _viewModel.getJobsDatabaseReference();
     if(_viewModel.favoritedData[index] == true){
-      _viewModel.jobsDatabaseReference.doc().set(
+      jobsDatabaseRef.doc().set(
           {
             "Location": data.companyLocation,
             "Job_Title": data.jobTitle,
@@ -45,7 +46,7 @@ class DataJobsPresenter{
           });
     } else {
       DocumentSnapshot? currDoc;
-      await _viewModel.jobsDatabaseReference.get().then((results){
+      await jobsDatabaseRef.get().then((results){
         for(DocumentSnapshot docs in results.docs){
           if(docs.get("Index") == index){
             currDoc = docs;
@@ -53,10 +54,9 @@ class DataJobsPresenter{
         }
       });
       String? id = currDoc?.id;
-      _viewModel.jobsDatabaseReference.doc(id).delete();
+      jobsDatabaseRef.doc(id).delete();
 
     }
-
     return _viewModel.favoritedData;
   }
 
