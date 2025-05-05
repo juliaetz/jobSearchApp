@@ -1,15 +1,11 @@
 import 'package:final_project/VIEW/jobInfo_component.dart';
 import 'package:final_project/PRESENTER/jobInfo_presenter.dart';
-import 'package:final_project/VIEW/locations_component.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:final_project/VIEW/DATA_SCIENCE/dataScienceJobsPage.dart';
 import 'package:final_project/VIEW/SOFTWARE_ENG/softwareEngJobsPage.dart';
 import 'package:final_project/VIEW/darkTheme.dart';
-import 'package:final_project/VIEW/careergoals_view.dart';
-
-import '../PRESENTER/jobInfo_presenter.dart';
+import 'package:final_project/VIEW/CAREER_GOALS/careergoals_view.dart';
 import 'account_screens/profile_settings_page.dart';
 
 
