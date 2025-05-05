@@ -171,6 +171,122 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
   }
 
 
+
+
+  // CHANGE FIRST AND LAST NAME
+  final _firstNameController = TextEditingController();
+  final _lastNameController = TextEditingController();
+
+  void _editName(){
+    _firstNameController.text = _firstName ?? '';
+    _lastNameController.text = _lastName ?? '';
+
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('Edit Name'),
+            content: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                TextField(
+                  controller: _firstNameController,
+                  decoration: InputDecoration(labelText: 'First Name'),
+                ),
+                TextField(
+                  controller: _lastNameController,
+                  decoration: InputDecoration(labelText: 'Last Name'),
+                ),
+              ],
+            ),
+
+            actions: [
+              TextButton(
+                child: Text('Cancel'),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+              TextButton(
+                child: Text('Save'),
+                onPressed: () async{
+                  await _updateName();
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+          );
+        });
+  }
+
+  final _nameFormKey = GlobalKey<FormState>();
+
+  Future<void> _updateName() async{
+    final userDocRef = await fire_base_logic.getUserDocument();
+    await userDocRef.update({
+      'First_Name': _firstNameController.text.trim(),
+      'Last_Name': _lastNameController.text.trim(),
+    });
+    setState(() {
+      _firstName = _firstNameController.text.trim();
+      _lastName = _lastNameController.text.trim();
+    });
+
+    showDialog(
+        context: context,
+        builder: (context){
+          return AlertDialog(
+            title: Text('Edit Name'),
+            content: Form(
+              key: _nameFormKey,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TextFormField(
+                    controller: _firstNameController,
+                    decoration: InputDecoration(labelText: 'First Name'),
+                    validator: (value){
+                      if(value == null || value.trim().isEmpty){
+                        return 'First name cannot be empty!';
+                      }
+                      return null;
+                    },
+                  ),
+                  TextFormField(
+                    controller: _lastNameController,
+                    decoration: InputDecoration(labelText: 'Last Name'),
+                    validator: (value){
+                      if(value == null || value.trim().isEmpty){
+                        return 'Last name cannot be empty!';
+                      }
+                      return null;
+                    },
+                  ),
+                ],
+              ),
+            ),
+
+            actions: [
+              TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: Text('CANCEL'),
+              ),
+              TextButton(
+                  onPressed: () async{
+                    if(_nameFormKey.currentState!.validate()){
+                      await _updateName();
+                      Navigator.of(context).pop();
+                    }
+                  },
+                  child: Text('SAVE'),
+              )
+            ],
+          );
+        });
+  }
+
+
+
+
+
   // GET CURRENT USER (Google Gemini)
   User? _currentUser;
   Future<void> _fetchCurrentUser() async {
@@ -418,6 +534,16 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
               leading: Icon(Icons.face_retouching_natural),
               title: Text('Change Profile Picture'),
               onTap: _pickImage,
+            ),
+
+
+            // EDIT NAME
+            ListTile(
+              leading: Icon(Icons.edit),
+              title: Text('Edit Name'),
+              onTap: (){
+                _editName();
+              }
             ),
 
 
