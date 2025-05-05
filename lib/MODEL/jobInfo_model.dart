@@ -6,6 +6,7 @@ import 'data_read.dart';
 
 class JobInfoModel{
   CollectionReference jobsDatabaseReference = FirebaseFirestore.instance.collection('Favorite_Jobs');
+  CollectionReference interviewsDatabaseReference = FirebaseFirestore.instance.collection("Interviews");
   Map<String,favoriteJob> favoritesList = <String,favoriteJob>{};
 
 
