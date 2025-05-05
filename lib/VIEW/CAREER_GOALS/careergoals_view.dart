@@ -1,5 +1,5 @@
-import 'package:final_project/VIEW/uncompletedgoals_view.dart';
-import 'package:final_project/VIEW/completedgoals_view.dart';
+import 'package:final_project/VIEW/CAREER_GOALS/uncompletedgoals_view.dart';
+import 'package:final_project/VIEW/CAREER_GOALS/completedgoals_view.dart';
 import 'package:flutter/material.dart';
 
 class CareerGoalsPage extends StatefulWidget {
