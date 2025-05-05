@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../PRESENTER/load_data.dart';
 import '../../MODEL/data_read.dart';
 import 'software_job_search_tab.dart';
+import '../../PRESENTER/softwareJobs_presenter.dart';
 
 
 class SoftwareEngJobsPage extends StatefulWidget {
@@ -15,13 +16,24 @@ class _SoftwareEngJobsPageState extends State<SoftwareEngJobsPage> {
   List<Job> jobs = [];
   String? loadError;
   int _selectedIndex = 0;
+  Map<int, bool> _isFavorited = <int,bool>{};
+
+  late SoftwareJobsPresenter presenter;
 
   @override
   void initState() {
     super.initState();
+
+    presenter = SoftwareJobsPresenter();
+    initData();
+
     repo.loadAndSort()
         .then((list) => setState(() => jobs = list))
         .catchError((e) => setState(() => loadError = e.toString()));
+  }
+
+  void initData() async {
+    _isFavorited = await presenter.setMaps();
   }
 
   void _onItemTapped(int index) {
@@ -45,9 +57,22 @@ class _SoftwareEngJobsPageState extends State<SoftwareEngJobsPage> {
           itemBuilder: (_, i) {
             final j = jobs[i];
             return ListTile(
-              title: Text(j.title),
+              title: Text('${j.title} • \$${j.avgSalary}'),
               subtitle: Text('${j.company} • ${j.location}'),
-              trailing: Text('\$${j.avgSalary}'),
+              //trailing: Text('\$${j.avgSalary}'),
+              trailing: IconButton(
+                onPressed: (){
+                  updateData() async{
+                    _isFavorited = await presenter.updateFavoriteData(i, jobs[i]);
+                  }
+
+                  setState(() {
+                    updateData();
+                  });
+                },
+                icon: Icon((_isFavorited[i] == true ? Icons.favorite : Icons
+                .favorite_border), color: Colors.green.shade700, size: 30.0,),
+              ),
             );
           },
         ),
