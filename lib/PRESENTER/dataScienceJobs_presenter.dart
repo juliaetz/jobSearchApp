@@ -47,7 +47,7 @@ class DataJobsPresenter{
       DocumentSnapshot? currDoc;
       await _viewModel.jobsDatabaseReference.get().then((results){
         for(DocumentSnapshot docs in results.docs){
-          if(docs.get("Index") == index){
+          if(docs.get("Index") == index && docs.get("Job_Type") == "Data Science"){
             currDoc = docs;
           }
         }
