@@ -49,7 +49,7 @@ class _JobSearchTabState extends State<JobSearchTab> {
           child: TextField(
             onChanged: _filterJobs,
             decoration: InputDecoration(
-              hintText: 'Search job title, company name, location, salary...',
+              hintText: 'Search by title, company, location, salary...',
               border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
               suffixIcon: Icon(Icons.search),
             ),
