@@ -119,3 +119,20 @@ class DataJob {
   }
 }
 
+
+class favoriteJob{
+  String jobTitle = "";
+  String location = "";
+  String salary = "";
+  String companyOrEmploymentType = "";
+  String dataType = "";
+
+  favoriteJob(String job, String loc, String sal, String CoET, String data){
+    jobTitle = job;
+    location = loc;
+    salary = sal;
+    companyOrEmploymentType = CoET;
+    dataType = data;
+  }
+}
+
