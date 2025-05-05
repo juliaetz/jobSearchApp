@@ -12,12 +12,12 @@ import '../model/filter_jobs_in_data_model.dart';
 
 class DataJobsPresenter{
   late DataJobsModel _viewModel;
-  final Function(Map<int, bool>) updateViewFavorites;
-  DataJobsPresenter({required this.updateViewFavorites}){
+
+  DataJobsPresenter(){
     this._viewModel = DataJobsModel();
   }
 
-  Future<void> setMaps() async {
+  Future<Map<int, bool>> setMaps() async {
     CollectionReference jobsDatabaseRef = await _viewModel.getJobsDatabaseReference();
       await jobsDatabaseRef.get().then((results){
       for(DocumentSnapshot docs in results.docs){
@@ -26,7 +26,8 @@ class DataJobsPresenter{
         }
       }
     });
-      updateViewFavorites(_viewModel.favoritedData);
+    
+    return _viewModel.favoritedData;
   }
 
 
@@ -48,7 +49,7 @@ class DataJobsPresenter{
       DocumentSnapshot? currDoc;
       await jobsDatabaseRef.get().then((results){
         for(DocumentSnapshot docs in results.docs){
-          if(docs.get("Index") == index){
+          if(docs.get("Index") == index && docs.get("Job_Type") == "Data Science"){
             currDoc = docs;
           }
         }

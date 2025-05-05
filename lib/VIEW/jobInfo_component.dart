@@ -40,6 +40,10 @@ class _JobInfoPageState extends State<JobInfoPage> implements JobInfoView {
    this.widget.presenter.removeFavorite(key!, dataType!);
   }
 
+  void handleScheduledInterview(String? job, DateTime? date, TimeOfDay? time){
+    this.widget.presenter.scheduleInterview(job!, date!, time!);
+  }
+
   @override
   void updatePage(Widget page){
     setState(() {
@@ -125,26 +129,29 @@ class _JobInfoPageState extends State<JobInfoPage> implements JobInfoView {
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              IconButton(
-                onPressed: () async {
-                  TimeOfDay? scheduledTime;
-                  DateTime? scheduledDate = await showDatePicker(
-                    context: context,
-                    initialDate: DateTime.now(),
-                    firstDate: DateTime(2025),
-                    lastDate: DateTime(2100),
-                  );
-                  if(scheduledDate != null) {
-                    scheduledTime = await showTimePicker(
+              Tooltip(
+                message: "Score an interview? Congratulations! Write it in your calender here.",
+                child: IconButton(
+                  onPressed: () async {
+                    TimeOfDay? scheduledTime;
+                    DateTime? scheduledDate = await showDatePicker(
                       context: context,
-                      initialTime: TimeOfDay.now(),
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime(2025),
+                      lastDate: DateTime(2100),
                     );
-                  }
-                  if(scheduledTime != null){
-                    //handleScheduledIdea(_favorites[index], scheduledDate, scheduledTime);
-                  }
-                },
-                icon: Icon(Icons.calendar_month, color: Colors.green.shade700, size: 30.0,),
+                    if(scheduledDate != null) {
+                      scheduledTime = await showTimePicker(
+                        context: context,
+                        initialTime: TimeOfDay.now(),
+                      );
+                    }
+                    if(scheduledTime != null){
+                      handleScheduledInterview(entry.value.jobTitle, scheduledDate, scheduledTime);
+                    }
+                  },
+                  icon: Icon(Icons.calendar_month, color: Colors.green.shade700, size: 30.0,),
+                ),
               ),
               IconButton(
                 onPressed: (){

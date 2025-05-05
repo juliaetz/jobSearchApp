@@ -10,6 +10,7 @@ import '../MODEL/data_read.dart';
 class JobInfoPresenter {
   void updatePage(){}
   void removeFavorite(String key, String dataType){}
+  void scheduleInterview(String job, DateTime date, TimeOfDay time){}
   set jobInfoView(JobInfoView value){}
 }
 
@@ -84,6 +85,25 @@ class BasicJobInfoPresenter extends JobInfoPresenter{
     jobsDatabaseRef.doc(id).delete();
 
     _view.updateFavorites(_viewModel.favoritesList);
+  }
+
+  @override
+  void scheduleInterview(String job, DateTime date, TimeOfDay time){
+    final dateTime = DateTime(
+      date.year,
+      date.month,
+      date.day,
+      time.hour,
+      time.minute,
+    );
+
+    String interview = "$job Interview";
+    _viewModel.interviewsDatabaseReference.doc().set(
+      {
+        "title": interview,
+        "dateTime": dateTime,
+      }
+    );
   }
 
 }
