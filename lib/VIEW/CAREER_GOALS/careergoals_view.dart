@@ -1,6 +1,7 @@
 import 'package:final_project/VIEW/CAREER_GOALS/uncompletedgoals_view.dart';
 import 'package:final_project/VIEW/CAREER_GOALS/completedgoals_view.dart';
 import 'package:flutter/material.dart';
+import 'package:final_project/VIEW/plan_interview_view.dart';
 
 class CareerGoalsPage extends StatefulWidget {
   @override
@@ -25,6 +26,7 @@ class _CareerGoalsPageState extends State<CareerGoalsPage> {
   final List<Widget> _widgetOptions = <Widget>[
     UncompletedGoalsPage(),
     CompletedGoalsPage(),
+    PlanInterviewPage(),
   ];
 
   @override
@@ -36,6 +38,7 @@ class _CareerGoalsPageState extends State<CareerGoalsPage> {
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Career Goals'),
           BottomNavigationBarItem(icon: Icon(Icons.check), label: 'Completed Goals'),
+          BottomNavigationBarItem(icon: Icon(Icons.calendar_month), label: 'Plan an Interview'),
         ],
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
