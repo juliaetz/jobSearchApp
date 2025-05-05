@@ -26,7 +26,6 @@ class _DataScienceListViewState extends State<DataScienceListView> {
 
     @override
     Widget build(BuildContext context) {
-      debugPrint('🔍 Building with jobs.length = ${jobs.length}');
       return FutureBuilder<List<DataJob>>(
         future: repo.loadAndSort(),
         builder: (context, snapshot) {
