@@ -51,3 +51,33 @@ class CareerGoal{
 
 }
 
+class Interview {
+  final String id;
+  final String title;
+  final DateTime dateTime;
+
+  Interview({
+    required this.id,
+    required this.title,
+    required this.dateTime,
+  });
+
+  Map<String, dynamic> toMap() => {
+    'title': title,
+    'dateTime': Timestamp.fromDate(dateTime),
+  };
+
+  factory Interview.fromMap(Map<String, dynamic> map, String id) {
+    if (!map.containsKey('title') || !map.containsKey('dateTime')) {
+      throw Exception('Invalid interview data');
+    }
+    return Interview(
+      id: id,
+      title: map['title'] as String,
+      dateTime: (map['dateTime'] as Timestamp).toDate(),
+    );
+  }
+}
+
+
+

@@ -8,16 +8,16 @@ and salary as a result
  */
 
 
-class JobSearchTab extends StatefulWidget{
+class SoftEngJobSearchTab extends StatefulWidget{
   final List<Job> allJobs;
 
-  const JobSearchTab({Key? key, required this.allJobs}) : super(key: key);
+  const SoftEngJobSearchTab({Key? key, required this.allJobs}) : super(key: key);
 
   @override
-  _JobSearchTabState createState() => _JobSearchTabState();
+  _SoftEngJobSearchTabState createState() => _SoftEngJobSearchTabState();
 }
 
-class _JobSearchTabState extends State<JobSearchTab> {
+class _SoftEngJobSearchTabState extends State<SoftEngJobSearchTab> {
   late List<Job> filteredJobs;
   Map<Job,int> originalIndex = <Job,int>{};
   Map<int,bool> _isFavorited = <int,bool>{};

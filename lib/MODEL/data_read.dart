@@ -88,7 +88,7 @@ class DataJob {
   });
 
   factory DataJob.fromMap(Map<String, String> row) {
-    // 1) Basic trims & parses
+    // 1) Basic trims and parses
     final workYear          = int.parse(row['work_year']!.trim());
     final jobTitle          = row['job_title']!.trim();
     final jobCategory       = row['job_category']!.trim();

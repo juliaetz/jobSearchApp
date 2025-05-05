@@ -26,4 +26,26 @@ class CareerGoalsPresenter{
     await firestore.collection('Career_Goals').doc(id).update({'completionDate': DateTime.now()});
   }
 
+  // ✱ Interview methods ───────────────────
+
+  /// Schedule a new interview
+  Future<void> addInterview(String title, DateTime dateTime) async {
+    await firestore
+        .collection('Interviews')
+        .add(Interview(id: '', title: title, dateTime: dateTime).toMap());
+  }
+
+  /// Stream all interviews as a List<Interview>
+  Stream<List<Interview>> getInterviews() {
+    return firestore.collection('Interviews').snapshots().map((snap) {
+      return snap.docs
+          .map((doc) => Interview.fromMap(doc.data(), doc.id))
+          .toList();
+    });
+  }
+
+  /// Delete an interview
+  Future<void> deleteInterview(String id) async {
+    await firestore.collection('Interviews').doc(id).delete();
+  }
 }

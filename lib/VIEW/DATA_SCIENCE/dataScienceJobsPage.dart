@@ -3,6 +3,8 @@ import '../../PRESENTER/load_data.dart';
 import '../../MODEL/data_read.dart';
 import 'filter_jobs_in_data_view.dart';
 import '../../PRESENTER/dataScienceJobs_presenter.dart';
+import 'package:final_project/VIEW/Data_SCIENCE/dataSci_job_search_tab.dart';
+
 class DataScienceListView extends StatefulWidget {
   @override
   _DataScienceListViewState createState() => _DataScienceListViewState();
@@ -86,12 +88,17 @@ class DataScienceJobsPage extends StatefulWidget {
 
 
 class _DataScienceJobsPageState extends State<DataScienceJobsPage> {
-
+  final repo = DataJobRepository();
+  List<DataJob> jobs = [];
+  String? loadError;
   int _selectedIndex = 0;
 
   @override
   void initState() {
     super.initState();
+    repo.loadAndSort()
+        .then((list) => setState(() => jobs = list))
+        .catchError((e) => setState(() => loadError = e.toString()));
   }
 
   void _onItemTapped(int index) {
@@ -99,18 +106,19 @@ class _DataScienceJobsPageState extends State<DataScienceJobsPage> {
       _selectedIndex = index;
     });
   }
-
-  final List<Widget> _widgetOptions = <Widget>[
-    DataScienceListView(),
-    FilterJobsInDataView(),
-    Text("SearchJobsInDataViewHere"),
-  ];
+  List<Widget> _widgetOptions() {
+    return [
+      DataScienceListView(),
+      FilterJobsInDataView(),
+      DataSciJobSearchTab(allJobs: jobs),
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(backgroundColor: Colors.green, title: Text("Data Science Careers")),
-      body: Center(child: _widgetOptions.elementAt(_selectedIndex)),
+      body: Center(child: _widgetOptions()[_selectedIndex]),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(icon: Icon(Icons.list), label: 'List'),
