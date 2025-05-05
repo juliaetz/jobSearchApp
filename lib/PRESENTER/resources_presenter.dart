@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:final_project/MODEL/resources_model.dart';
-import 'package:final_project/VIEW/resources_view.dart';
+import '../MODEL/resources_model.dart';
+import '../VIEW/resources_view.dart';
 
-import 'package:final_project/MODEL/articleInfo.dart';
+import '../MODEL/articleInfo.dart';
 
 class ResourcesPresenter {
   void updatePage(int index){}
@@ -37,7 +37,8 @@ class BasicResourcesPresenter extends ResourcesPresenter{
   }
 
   Future<void> setMaps() async {
-    await _viewModel.resourcesDatabaseReference.get().then((results){
+    CollectionReference resourcesDatabaseRef = await _viewModel.getResourcesDatabaseReference();
+    await resourcesDatabaseRef.get().then((results){
       for(DocumentSnapshot docs in results.docs){
         _viewModel.favorited[docs.get("Index")] = true;
         String url = docs.get("URL");
@@ -77,9 +78,10 @@ class BasicResourcesPresenter extends ResourcesPresenter{
   @override
   void updateFavorite(int index, articleInfo data) async {
     updateBool(index);
+    CollectionReference resourcesDatabaseRef = await _viewModel.getResourcesDatabaseReference();
 
     if(_viewModel.favorited[index] == true){
-      _viewModel.resourcesDatabaseReference.doc().set(
+      resourcesDatabaseRef.doc().set(
           {
             "URL": data.URL,
             "Title": data.articleTitle,
@@ -90,7 +92,7 @@ class BasicResourcesPresenter extends ResourcesPresenter{
       _viewModel.favoritesList[data.URL] = data;
     } else {
       DocumentSnapshot? currDoc;
-      await _viewModel.resourcesDatabaseReference.get().then((results){
+      await resourcesDatabaseRef.get().then((results){
         for(DocumentSnapshot docs in results.docs){
           if(docs.get("URL") == data.URL){
             currDoc = docs;
@@ -98,7 +100,7 @@ class BasicResourcesPresenter extends ResourcesPresenter{
         }
       });
       String? id = currDoc?.id;
-      _viewModel.resourcesDatabaseReference.doc(id).delete();
+      resourcesDatabaseRef.doc(id).delete();
       _viewModel.favoritesList.remove(data.URL);
     }
 
@@ -119,9 +121,10 @@ class BasicResourcesPresenter extends ResourcesPresenter{
   @override
   void removeFavorite(String URL) async {
     _viewModel.favoritesList.remove(URL); // done right away to avoid issues
+    CollectionReference resourcesDatabaseRef = await _viewModel.getResourcesDatabaseReference();
 
     DocumentSnapshot? currDoc;
-    await _viewModel.resourcesDatabaseReference.get().then((results){
+    await resourcesDatabaseRef.get().then((results){
       for(DocumentSnapshot docs in results.docs){
         if(docs.get("URL") == URL){
           currDoc = docs;
@@ -131,7 +134,7 @@ class BasicResourcesPresenter extends ResourcesPresenter{
     String? id = currDoc?.id;
     int? index = currDoc?.get("Index");
 
-    _viewModel.resourcesDatabaseReference.doc(id).delete();
+    resourcesDatabaseRef.doc(id).delete();
 
     updateBool(index!);
 

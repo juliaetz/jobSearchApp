@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-//import 'package:stress_managment_app/account_firebase_logic.dart';
 import 'articleInfo.dart';
+import '../account_firebase_logic.dart';
 
 class ResourcesModel{
   int _pageIndex = 0;
-  CollectionReference resourcesDatabaseReference = FirebaseFirestore.instance.collection('Favorite_Resources');
   Map<int,bool> favorited = <int,bool>{};
   Map<String,articleInfo> favoritesList = <String,articleInfo>{}; // String = url
 
@@ -14,12 +13,9 @@ class ResourcesModel{
     _pageIndex = setValue;
   }
 
-
-  /*Future<void> initializeFavIdeasDatabaseRef() async {
+  Future<CollectionReference> getResourcesDatabaseReference() async {
     final userDocRef = await getUserDocument();
-    favoritesDatabaseReference = userDocRef.collection('Favorite_Ideas');
-    eventsDatabaseReference = userDocRef.collection('events');
-  }*/
+    return userDocRef.collection('Favorite_Resources');
+  }
   ResourcesModel();
-//initializeFavIdeasDatabaseRef();
 }
