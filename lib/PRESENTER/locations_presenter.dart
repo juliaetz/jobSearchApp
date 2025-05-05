@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:final_project/MODEL/locations_model.dart';
-import 'package:final_project/VIEW/locations_view.dart';
+import '../MODEL/locations_model.dart';
+import '../VIEW/locations_view.dart';
 
 class LocationsPresenter {
   void updatePage(int index){}
@@ -33,7 +33,8 @@ class BasicLocationsPresenter extends LocationsPresenter{
   }
 
   Future<void> setMaps() async {
-    await _viewModel.locationsDatabaseReference.get().then((results){
+    CollectionReference locationsDatabaseRef = await _viewModel.getLocationsDatabaseReference();
+    await locationsDatabaseRef.get().then((results){
       for(DocumentSnapshot docs in results.docs){
         if(docs.get("Job") == "Software Engineering"){
           _viewModel.softwareFavorited[docs.get("Index")] = true;
@@ -72,9 +73,10 @@ class BasicLocationsPresenter extends LocationsPresenter{
   void updateFavorite(int index, List<String> data, String dataType) async {
     Map<int,bool> favorited = chooseMap(dataType);
     updateBool(favorited, index);
+    CollectionReference locationsDatabaseRef = await _viewModel.getLocationsDatabaseReference();
 
     if(favorited[index] == true){
-        _viewModel.locationsDatabaseReference.doc().set(
+        locationsDatabaseRef.doc().set(
           {
             "Location": data[index],
             "Job": dataType,
@@ -83,7 +85,7 @@ class BasicLocationsPresenter extends LocationsPresenter{
         _viewModel.favoritesList[data[index]] = dataType;
       } else {
         DocumentSnapshot? currDoc;
-        await _viewModel.locationsDatabaseReference.get().then((results){
+        await locationsDatabaseRef.get().then((results){
           for(DocumentSnapshot docs in results.docs){
             if(docs.get("Location") == data[index]){
               currDoc = docs;
@@ -91,7 +93,7 @@ class BasicLocationsPresenter extends LocationsPresenter{
           }
         });
         String? id = currDoc?.id;
-        _viewModel.locationsDatabaseReference.doc(id).delete();
+        locationsDatabaseRef.doc(id).delete();
         _viewModel.favoritesList.remove(data[index]);
       }
 
@@ -119,9 +121,10 @@ class BasicLocationsPresenter extends LocationsPresenter{
   @override
   void removeFavorite(String location, String dataType) async {
     _viewModel.favoritesList.remove(location); // done right away to avoid issues
+    CollectionReference locationsDatabaseRef = await _viewModel.getLocationsDatabaseReference();
 
     DocumentSnapshot? currDoc;
-    await _viewModel.locationsDatabaseReference.get().then((results){
+    await locationsDatabaseRef.get().then((results){
       for(DocumentSnapshot docs in results.docs){
         if(docs.get("Location") == location){
           currDoc = docs;
@@ -131,7 +134,7 @@ class BasicLocationsPresenter extends LocationsPresenter{
     String? id = currDoc?.id;
     int? index = currDoc?.get("Index");
 
-    _viewModel.locationsDatabaseReference.doc(id).delete();
+    locationsDatabaseRef.doc(id).delete();
 
     Map<int,bool> favorited = chooseMap(dataType);
     updateBool(favorited, index!);
