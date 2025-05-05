@@ -380,8 +380,7 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
 
 
 
-                  // NAME AND EMAIL HARDCODED
-                  // IMPLEMENT ONCE THERE'S LOGIN/SIGNUP PAGE
+                  // DISPLAY NAME AND EMAIL AS LOGGED IN
                   FutureBuilder<void>(
                     future: Future.wait([_fetchCurrentUser(), _fetchUserData()]),
                     builder: (context, snapshot) {
