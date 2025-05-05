@@ -2,8 +2,8 @@ import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:final_project/MODEL/jobInfo_model.dart';
-import 'package:final_project/VIEW/jobInfo_view.dart';
+import '../MODEL/jobInfo_model.dart';
+import '../VIEW/jobInfo_view.dart';
 
 import '../MODEL/data_read.dart';
 
@@ -18,7 +18,7 @@ class BasicJobInfoPresenter extends JobInfoPresenter{
   late JobInfoView _view;
 
   BasicJobInfoPresenter() {
-    this._viewModel = JobInfoModel();
+    _viewModel = JobInfoModel();
   }
 
 
@@ -40,7 +40,8 @@ class BasicJobInfoPresenter extends JobInfoPresenter{
   }
 
   Future<void> setMaps() async {
-    await _viewModel.jobsDatabaseReference.get().then((results){
+    CollectionReference jobsDatabaseRef = await _viewModel.getJobsDatabaseReference();
+    await jobsDatabaseRef.get().then((results){
       for(DocumentSnapshot docs in results.docs){
         String CoET = "";
         if(docs.get("Job_Type") == "Software Engineering"){
@@ -67,9 +68,10 @@ class BasicJobInfoPresenter extends JobInfoPresenter{
   @override
   void removeFavorite(String key, String dataType) async {
     _viewModel.favoritesList.remove(key); // done right away to avoid issues
+    CollectionReference jobsDatabaseRef = await _viewModel.getJobsDatabaseReference();
 
     DocumentSnapshot? currDoc;
-    await _viewModel.jobsDatabaseReference.get().then((results){
+    await jobsDatabaseRef.get().then((results){
       for(DocumentSnapshot docs in results.docs){
         String jobInfo = "${docs.get("Job_Type")}.${docs.get("Index").toString()}";
         if(key == jobInfo){
@@ -79,7 +81,7 @@ class BasicJobInfoPresenter extends JobInfoPresenter{
     });
     String? id = currDoc?.id;
 
-    _viewModel.jobsDatabaseReference.doc(id).delete();
+    jobsDatabaseRef.doc(id).delete();
 
     _view.updateFavorites(_viewModel.favoritesList);
   }
