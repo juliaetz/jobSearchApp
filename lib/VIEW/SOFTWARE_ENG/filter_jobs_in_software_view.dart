@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../MODEL/filter_jobs_in_software_model.dart';
-import '../../PRESENTER/load_data.dart';
-import '../../MODEL/data_read.dart';
 import '../../PRESENTER/filter_jobs_in_software_presenter.dart';
-import '../../MODEL/data_read.dart';
+
 
 class FilterJobsInSoftwareView extends StatefulWidget {
   const FilterJobsInSoftwareView({Key? key}) : super(key: key);
