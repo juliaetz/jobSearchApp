@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../account_firebase_logic.dart';
 
 class CareerGoalsPresenter{
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   Future<void> addCareerGoal(CareerGoal goal) async {
       DocumentReference userDocRef = await getUserDocument();
