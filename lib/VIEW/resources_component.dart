@@ -35,7 +35,7 @@ class _ResourcesPageState extends State<ResourcesPage> implements ResourcesView 
 
   UniqueKey _key = UniqueKey();
 
-  Widget _page = JobInfoPage(BasicJobInfoPresenter(), title: '', key: const Key(''));
+  Widget _page = Center(child: CircularProgressIndicator());
   int _selectedIndex = 0;
   bool _isLoading = true;
   List<articleInfo> resources = [articleInfo("https://www.indeed.com/career-advice/interviewing/how-to-prepare-for-an-interview", "How to Prepare for an Interview", "Indeed", "assets/images/indeedResource.jpg"),

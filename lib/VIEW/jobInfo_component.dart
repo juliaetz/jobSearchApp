@@ -1,3 +1,4 @@
+import 'package:final_project/MODEL/data_read.dart';
 import 'package:flutter/material.dart';
 import 'package:final_project/VIEW/jobHomePage.dart';
 import 'package:final_project/PRESENTER/jobInfo_presenter.dart';
@@ -27,27 +28,38 @@ class _JobInfoPageState extends State<JobInfoPage> implements JobInfoView {
     this.widget.presenter.jobInfoView = this;
   }
 
-  Widget _page = Placeholder();
-  List<String> _favorites = ["temp", "temp2"];
+  Widget _page = JobHomePage();
+  Map<String,favoriteJob> _favorites = <String,favoriteJob>{};
+  bool _isLoading = true;
 
-  void handlePageChange(int index){
-    this.widget.presenter.updatePage(index);
+  void handlePageChange(){
+    this.widget.presenter.updatePage();
   }
 
+  void handleRemoveFavorite(String? key, String? dataType){
+   this.widget.presenter.removeFavorite(key!, dataType!);
+  }
 
   @override
   void updatePage(Widget page){
     setState(() {
       _page = page;
+      _isLoading = false;
     });
   }
 
+  @override
+  void updateFavorites(Map<String,favoriteJob> map){
+    setState(() {
+      _favorites = map;
+    });
+  }
 
 
   @override
   Widget build(BuildContext context){
     return Scaffold(
-      appBar: AppBar(
+      appBar: _isLoading ? null : AppBar(
         backgroundColor: Colors.green,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -57,7 +69,7 @@ class _JobInfoPageState extends State<JobInfoPage> implements JobInfoView {
         )
       ),
 
-      body: _page,//_page,
+      body: _page,
 
     );
   }
@@ -97,7 +109,7 @@ class _JobInfoPageState extends State<JobInfoPage> implements JobInfoView {
   }
 
   List<Widget> createFavoritesRows() {
-    return List.generate(_favorites.length, (index) {
+    return _favorites.entries.map ((entry) {
       return Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
@@ -105,7 +117,10 @@ class _JobInfoPageState extends State<JobInfoPage> implements JobInfoView {
           Flexible(
             fit: FlexFit.tight,
             flex: 8,
-            child: Text(_favorites[index], style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),),
+            child: ListTile(
+              title: Text("${entry.value.jobTitle} • \$${entry.value.salary}", style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),),
+              subtitle: Text("${entry.value.location} • ${entry.value.companyOrEmploymentType}"),
+            ),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
@@ -133,7 +148,10 @@ class _JobInfoPageState extends State<JobInfoPage> implements JobInfoView {
               ),
               IconButton(
                 onPressed: (){
-                  //handleRemoveFavorite(_favorites[index]);
+                  handleRemoveFavorite(entry.key, entry.value.dataType);
+                  setState(() {
+                    handlePageChange();
+                  });
                 },
                 icon: Icon(Icons.delete, color: Colors.green.shade700, size: 30.0,),
               ),
@@ -141,7 +159,7 @@ class _JobInfoPageState extends State<JobInfoPage> implements JobInfoView {
           ),
         ],
       );
-    });
+    }) .toList();
   }
 
   Column createFindResources() {
@@ -181,108 +199,3 @@ class _JobInfoPageState extends State<JobInfoPage> implements JobInfoView {
   }
 
 }
-
-  /*@override
-  Container FavoriteJobsPage(){
-    return Container(
-
-      child: Container(
-        child: Column(
-          children: [
-            createFavorites(),
-            Column(
-              children: [
-                createFindResources(),
-                createFindLocations(),
-              ],
-            )
-          ],
-        ),
-      ),
-    );
-  }
-
-  Expanded createFavorites() {
-    return Expanded(
-      flex: 9,
-      child: SingleChildScrollView(
-        child: Column(
-          children: createFavoritesRows(),
-        ),
-      ),
-    );
-  }
-
-  List<Widget> createFavoritesRows() {
-    return List.generate(_favorites.length, (index) {
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Padding(padding: EdgeInsets.all(10.0)),
-          Flexible(
-            fit: FlexFit.tight,
-            flex: 8,
-            child: Text(_favorites[index], style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              IconButton(
-                onPressed: () async {
-                  TimeOfDay? scheduledTime;
-                  DateTime? scheduledDate = await showDatePicker(
-                    context: context,
-                    initialDate: DateTime.now(),
-                    firstDate: DateTime(2025),
-                    lastDate: DateTime(2100),
-                  );
-                  if(scheduledDate != null) {
-                    scheduledTime = await showTimePicker(
-                      context: context,
-                      initialTime: TimeOfDay.now(),
-                    );
-                  }
-                  if(scheduledTime != null){
-                    handleScheduledIdea(_favorites[index], scheduledDate, scheduledTime);
-                  }
-                },
-                icon: Icon(Icons.calendar_month, color: Colors.deepPurple.shade700, size: 30.0,),
-              ),
-              IconButton(
-                onPressed: (){
-                  handleRemoveFavorite(_favorites[index]);
-                },
-                icon: Icon(Icons.delete, color: Colors.deepPurple.shade700, size: 30.0,),
-              ),
-            ],
-          ),
-        ],
-      );
-    });
-  }
-
-  Column createFindResources() {
-    return Column(
-      children: [
-        Text('Need Help Preparing For Your Interview?'),
-        ElevatedButton(
-            onPressed: () {
-
-            },
-            child: Text('Interview Resources'))
-      ],
-    );
-  }
-
-  Column createFindLocations() {
-    return Column(
-      children: [
-        Text('Continue Your Job Search?'),
-        ElevatedButton(
-            onPressed: () {
-
-            },
-            child: Text('Find The Best Locations'))
-      ],
-    );
-  }*/
