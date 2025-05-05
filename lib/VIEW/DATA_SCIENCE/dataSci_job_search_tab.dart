@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:final_project/VIEW/DATA_SCIENCE/dataScienceJobsPage.dart';
 import '../../MODEL/data_read.dart';
 
 
@@ -66,16 +65,26 @@ class _DataSciJobSearchTabState extends State<DataSciJobSearchTab>{
         ),
 
         //Dropdown to pick the work setting
-        DropdownButton<String>(
-          value: workSetting,
-          onChanged: _filterWorkSetting,
-          items: <String>['Any', 'Remote', 'In-person', 'Hybrid']
-              .map<DropdownMenuItem<String>>((String value) {
-            return DropdownMenuItem<String>(
-              value: value,
-              child: Text(value),
-            );
-          }).toList(),
+        Padding(
+            padding: const EdgeInsets.all(6),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('Work Setting: '),
+                SizedBox(width: 8),
+                DropdownButton<String>(
+                  value: workSetting,
+                  onChanged: _filterWorkSetting,
+                  items: <String>['Any', 'Remote', 'In-person', 'Hybrid']
+                      .map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                ),
+              ]
+            )
         ),
 
         // DISPLAY JOB INFORMATION
