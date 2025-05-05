@@ -31,13 +31,13 @@ Future<DocumentReference<Map<String, dynamic>>> getUserDocument() async {
 Future<void> deleteUserData(String userUID) async {
   final userDocRef = FirebaseFirestore.instance.collection('users').doc(userUID);
 
-  // Add sub-collections that a user may have here:
-  // Example of how to add sub-collections that a user may have, so they can be deleted:
-  // await userDocRef.collection('Persistent_Variables').get().then((querySnapshot) {
-  //   for (final doc in querySnapshot.docs) {
-  //     doc.reference.delete();
-  //   }
-  // });
-
+  // Add collections that a user may have here:
+  List<String> collections = ['Career_Goals', 'Favorite_Jobs', 'Favorite_Locations', 'Favorite_Resources'];
+  for (String collection in collections) {
+    final querySnapshot = await userDocRef.collection(collection).get();
+      for (final doc in querySnapshot.docs) {
+        doc.reference.delete();
+      }
+  }
   await userDocRef.delete();
 }
