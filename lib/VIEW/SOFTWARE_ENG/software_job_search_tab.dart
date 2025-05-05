@@ -64,20 +64,19 @@ class _JobSearchTabState extends State<JobSearchTab> {
   @override
   Widget build(BuildContext context) {
     return Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(12),
-            // TEXT FIELD (SEARCH BAR)
-            child: TextField(
-              onChanged: _filterJobs,
-              decoration: InputDecoration(
-                hintText: 'Search job title, company name, location, salary...',
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8)),
-                suffixIcon: Icon(Icons.search),
-              ),
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(12),
+          // TEXT FIELD (SEARCH BAR)
+          child: TextField(
+            onChanged: _filterJobs,
+            decoration: InputDecoration(
+              hintText: 'Search by title, company, location, salary...',
+              border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+              suffixIcon: Icon(Icons.search),
             ),
           ),
+        ),
 
           // DISPLAY JOB INFORMATION
           Expanded(
