@@ -30,12 +30,13 @@ class _DataScienceListViewState extends State<DataScienceListView> {
       }
     });
 
-    presenter = DataJobsPresenter(updateViewFavorites: (Map<int, bool> favorites) {
-      setState(() {
-        _isFavorited = favorites;
-      });
-    });
-    presenter.setMaps();
+    presenter = DataJobsPresenter();
+
+    initData();
+  }
+
+  void initData() async {
+    _isFavorited = await presenter.setMaps();
   }
 
     @override
