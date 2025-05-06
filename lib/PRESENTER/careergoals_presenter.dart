@@ -1,6 +1,7 @@
 import 'package:final_project/MODEL/careergoals_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../account_firebase_logic.dart';
+import '../account_firebase_logic.dart';
 
 class CareerGoalsPresenter{
 
@@ -36,22 +37,26 @@ class CareerGoalsPresenter{
 
   /// Schedule a new interview
   Future<void> addInterview(String title, DateTime dateTime) async {
-    await firestore
+    DocumentReference userDocRef = await getUserDocument();
+    await userDocRef
         .collection('Interviews')
         .add(Interview(id: '', title: title, dateTime: dateTime).toMap());
   }
 
   /// Stream all interviews as a List<Interview>
   Stream<List<Interview>> getInterviews() {
-    return firestore.collection('Interviews').snapshots().map((snap) {
-      return snap.docs
-          .map((doc) => Interview.fromMap(doc.data(), doc.id))
-          .toList();
+    return Stream.fromFuture(getUserDocument()).asyncExpand((userDocRef) {
+      return userDocRef.collection('Interviews').snapshots().map((snap) {
+        return snap.docs
+            .map((doc) => Interview.fromMap(doc.data(), doc.id))
+            .toList();
+      });
     });
   }
 
   /// Delete an interview
   Future<void> deleteInterview(String id) async {
-    await firestore.collection('Interviews').doc(id).delete();
+    DocumentReference userDocRef = await getUserDocument();
+    await userDocRef.collection('Interviews').doc(id).delete();
   }
 }
