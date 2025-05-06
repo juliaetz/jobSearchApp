@@ -285,7 +285,14 @@ class _SignInScreenState extends State<SignInScreen> {
                                   const SizedBox(height: 10),
                                   ElevatedButton(
                                     onPressed: _signInWithGoogle,
-                                    child: const Text('Sign In with Google'),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Image.asset('assets/google_icon.png', height: 24), // Google logo asset
+                                        const SizedBox(width: 10),
+                                        const Text(' Sign In with Google'),
+                                      ],
+                                  ),
                                   ),
 
                                 ],
