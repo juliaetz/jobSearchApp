@@ -187,6 +187,7 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
           return AlertDialog(
             title: Text('Edit Name'),
             content: Column(
+              mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 TextField(
@@ -208,16 +209,14 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
               TextButton(
                 child: Text('Save'),
                 onPressed: () async{
-                  await _updateName();
                   Navigator.of(context).pop();
+                  await _updateName();
                 },
               )
             ],
           );
         });
   }
-
-  final _nameFormKey = GlobalKey<FormState>();
 
   Future<void> _updateName() async{
     final userDocRef = await fire_base_logic.getUserDocument();
@@ -229,58 +228,6 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
       _firstName = _firstNameController.text.trim();
       _lastName = _lastNameController.text.trim();
     });
-
-    showDialog(
-        context: context,
-        builder: (context){
-          return AlertDialog(
-            title: Text('Edit Name'),
-            content: Form(
-              key: _nameFormKey,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  TextFormField(
-                    controller: _firstNameController,
-                    decoration: InputDecoration(labelText: 'First Name'),
-                    validator: (value){
-                      if(value == null || value.trim().isEmpty){
-                        return 'First name cannot be empty!';
-                      }
-                      return null;
-                    },
-                  ),
-                  TextFormField(
-                    controller: _lastNameController,
-                    decoration: InputDecoration(labelText: 'Last Name'),
-                    validator: (value){
-                      if(value == null || value.trim().isEmpty){
-                        return 'Last name cannot be empty!';
-                      }
-                      return null;
-                    },
-                  ),
-                ],
-              ),
-            ),
-
-            actions: [
-              TextButton(
-                  onPressed: () => Navigator.of(context).pop(),
-                  child: Text('CANCEL'),
-              ),
-              TextButton(
-                  onPressed: () async{
-                    if(_nameFormKey.currentState!.validate()){
-                      await _updateName();
-                      Navigator.of(context).pop();
-                    }
-                  },
-                  child: Text('SAVE'),
-              )
-            ],
-          );
-        });
   }
 
 
