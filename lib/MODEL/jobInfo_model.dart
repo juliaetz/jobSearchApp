@@ -13,5 +13,10 @@ class JobInfoModel{
     final userDocRef = await getUserDocument();
     return userDocRef.collection('Favorite_Jobs');
   }
+
+  Future<CollectionReference> getInterviewsDatabaseReference() async {
+    final userDocRef = await getUserDocument();
+    return userDocRef.collection('Interviews');
+  }
   JobInfoModel();
 }
