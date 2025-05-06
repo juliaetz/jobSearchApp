@@ -395,7 +395,7 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
     final userData = await userDocRef.get();
     _firstName = userData.data()!['First_Name'];
     _lastName = userData.data()!['Last_Name'];
-    _email = _currentUser!.email;
+    _email = userData.data()!['User_Email'];
   }
 
   @override

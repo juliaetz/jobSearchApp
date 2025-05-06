@@ -78,6 +78,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
     });
     try{
       await FirebaseAuth.instance.signInAnonymously();
+      await fire_base_logic.createUserDocument(FirebaseAuth.instance.currentUser!);
+      DocumentReference userDocRef = await fire_base_logic.getUserDocument();
+      await userDocRef.update({
+        'First_Name': 'Guest',
+        'Last_Name': '',
+        'User_Email': '',
+      });
       Navigator.of(context).pushNamedAndRemoveUntil('/home', (Route<dynamic> route) => false);
     }
     on FirebaseAuthException catch (e){
