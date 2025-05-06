@@ -88,7 +88,7 @@ class BasicJobInfoPresenter extends JobInfoPresenter{
   }
 
   @override
-  void scheduleInterview(String job, DateTime date, TimeOfDay time){
+  void scheduleInterview(String job, DateTime date, TimeOfDay time) async {
     final dateTime = DateTime(
       date.year,
       date.month,
@@ -97,8 +97,9 @@ class BasicJobInfoPresenter extends JobInfoPresenter{
       time.minute,
     );
 
+    CollectionReference interviewsDatabaseRef = await _viewModel.getInterviewsDatabaseReference();
     String interview = "$job Interview";
-    _viewModel.interviewsDatabaseReference.doc().set(
+    interviewsDatabaseRef.doc().set(
       {
         "title": interview,
         "dateTime": dateTime,
