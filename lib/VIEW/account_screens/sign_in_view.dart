@@ -181,7 +181,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   child: Container(
                     padding: const EdgeInsets.all(25),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: Theme.of(context).colorScheme.surfaceContainer,
                       borderRadius: BorderRadius.circular(10.0),
                     ),
                     child: Scrollbar(
