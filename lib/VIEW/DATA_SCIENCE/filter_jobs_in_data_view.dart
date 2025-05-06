@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../model/filter_jobs_in_data_model.dart';
 import '../../presenter/filter_jobs_in_data_presenter.dart';
+import 'graph_comparing_jobs_in_data.dart';
 
 class FilterJobsInDataView extends StatefulWidget {
   @override
@@ -15,6 +16,7 @@ class _FilterJobsInDataViewState extends State<FilterJobsInDataView> {
   Map<String, double> _currentData = {};
   final List<String> _filterOptions = ['Countries', 'Company Size', 'Employment Type', 'Experience Level', 'Job Category'];
   String currentFilter = 'Countries';
+  Widget currentGraph = Container();
 
   late FilterJobsInDataPresenter _presenter;
 
@@ -28,6 +30,7 @@ class _FilterJobsInDataViewState extends State<FilterJobsInDataView> {
           _currentData = itemsAndSalaries;
           _currentItems = _currentData.keys.toList();
           _currentSalaries = _currentData.values.toList();
+          currentGraph = GraphJobsInData(data: _currentData);
         });
       },
     );
@@ -80,6 +83,7 @@ class _FilterJobsInDataViewState extends State<FilterJobsInDataView> {
                 ],
               ),
               Expanded(
+                flex: 4,
                 child: ListView.builder(
                   itemCount: _currentItems.length,
                   itemBuilder: (context, index) {
@@ -107,6 +111,14 @@ class _FilterJobsInDataViewState extends State<FilterJobsInDataView> {
                   },
                 ),
               ),
+              Divider(
+                thickness: 5,
+                height: 50,
+                color: Theme.of(context).primaryColor,
+              ),
+              Expanded(
+                  flex: 3,
+                  child: currentGraph),
             ],
           ),
     );

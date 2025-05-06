@@ -25,5 +25,4 @@ class FilterJobsInDataPresenter{
     updateViewItemsAndSalaries(await model.getSalariesByJobCategory());
   }
 
-
 }
