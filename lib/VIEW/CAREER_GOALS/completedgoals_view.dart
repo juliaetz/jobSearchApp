@@ -115,7 +115,7 @@ class _CompletedGoalsPageState extends State<CompletedGoalsPage> {
                                 ),
                               ),
                               SizedBox(height: 10),
-                              DropdownButton<GoalType>(
+                              DropdownButtonFormField<GoalType>(
                                   value: selectedType,
                                   items: GoalType.values.map((GoalType type) {
                                     return DropdownMenuItem<GoalType>(
