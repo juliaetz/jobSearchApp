@@ -13,4 +13,17 @@ class FilterJobsInDataPresenter{
     updateViewItemsAndSalaries(await model.getSalariesByCompanySize());
   }
 
+  Future<void> filterByEmploymentType() async {
+    updateViewItemsAndSalaries(await model.getSalariesByEmploymentType());
+  }
+
+  Future<void> filterByExperienceLevel() async {
+    updateViewItemsAndSalaries(await model.getSalariesByExperienceLevel());
+  }
+
+  Future<void> filterByJobCategory() async {
+    updateViewItemsAndSalaries(await model.getSalariesByJobCategory());
+  }
+
+
 }

@@ -13,7 +13,7 @@ class _FilterJobsInDataViewState extends State<FilterJobsInDataView> {
   List<String> _currentItems = [];
   List<double> _currentSalaries = [];
   Map<String, double> _currentData = {};
-  final List<String> _filterOptions = ['Countries', 'Company Size'];
+  final List<String> _filterOptions = ['Countries', 'Company Size', 'Employment Type', 'Experience Level', 'Job Category'];
   String currentFilter = 'Countries';
 
   late FilterJobsInDataPresenter _presenter;
@@ -55,6 +55,18 @@ class _FilterJobsInDataViewState extends State<FilterJobsInDataView> {
                       if (newValue == 'Company Size') {
                         _presenter.filterByCompanySize();
                         currentFilter = 'Company Size';
+                      }
+                      if (newValue == 'Employment Type') {
+                        _presenter.filterByEmploymentType();
+                        currentFilter = 'Employment Type';
+                      }
+                      if (newValue == 'Experience Level') {
+                        _presenter.filterByExperienceLevel();
+                        currentFilter = 'Experience Level';
+                      }
+                      if (newValue == 'Job Category') {
+                        _presenter.filterByJobCategory();
+                        currentFilter = 'Job Category';
                       }
                     },
                     items: _filterOptions

@@ -36,6 +36,78 @@ class FilterJobsInDataModel {
     return averageSalariesByCountry;
   }
 
+  Future<Map<String, double>> getSalariesByExperienceLevel() async {
+    if (!_jobsLoaded) {
+      await initJobs();
+    }
+    Map<String, List<int>> salariesByExperienceLevel = {};
+    for (DataJob job in jobs) {
+      if (!salariesByExperienceLevel.containsKey(job.experienceLevel)) {
+        salariesByExperienceLevel[job.experienceLevel] = [];
+      }
+      salariesByExperienceLevel[job.experienceLevel]!.add(job.salaryInUsd);
+    }
+    Map<String, double> averageSalariesByExperienceLevel = {};
+    for (String experienceLevel in salariesByExperienceLevel.keys) {
+      double totalSalary = 0;
+      for (int salary in salariesByExperienceLevel[experienceLevel]!) {
+        totalSalary += salary;
+      }
+      double averageSalaryForCountry = totalSalary / salariesByExperienceLevel[experienceLevel]!.length;
+      averageSalariesByExperienceLevel[experienceLevel] = averageSalaryForCountry;
+    }
+    averageSalariesByExperienceLevel = sortBySalary(averageSalariesByExperienceLevel);
+    return averageSalariesByExperienceLevel;
+  }
+
+  Future<Map<String, double>> getSalariesByJobCategory() async {
+    if (!_jobsLoaded) {
+      await initJobs();
+    }
+    Map<String, List<int>> salariesByJobCategory = {};
+    for (DataJob job in jobs) {
+      if (!salariesByJobCategory.containsKey(job.jobCategory)) {
+        salariesByJobCategory[job.jobCategory] = [];
+      }
+      salariesByJobCategory[job.jobCategory]!.add(job.salaryInUsd);
+    }
+    Map<String, double> averageSalariesByJobCategory = {};
+    for (String jobCategory in salariesByJobCategory.keys) {
+      double totalSalary = 0;
+      for (int salary in salariesByJobCategory[jobCategory]!) {
+        totalSalary += salary;
+      }
+      double averageSalaryForCountry = totalSalary / salariesByJobCategory[jobCategory]!.length;
+      averageSalariesByJobCategory[jobCategory] = averageSalaryForCountry;
+    }
+    averageSalariesByJobCategory = sortBySalary(averageSalariesByJobCategory);
+    return averageSalariesByJobCategory;
+  }
+
+  Future<Map<String, double>> getSalariesByEmploymentType() async {
+    if (!_jobsLoaded) {
+      await initJobs();
+    }
+    Map<String, List<int>> salariesByEmploymentType = {};
+    for (DataJob job in jobs) {
+      if (!salariesByEmploymentType.containsKey(job.employmentType)) {
+        salariesByEmploymentType[job.employmentType] = [];
+      }
+      salariesByEmploymentType[job.employmentType]!.add(job.salaryInUsd);
+    }
+    Map<String, double> averageSalariesByEmploymentType = {};
+    for (String employmentType in salariesByEmploymentType.keys) {
+      double totalSalary = 0;
+      for (int salary in salariesByEmploymentType[employmentType]!) {
+        totalSalary += salary;
+      }
+      double averageSalaryForCountry = totalSalary / salariesByEmploymentType[employmentType]!.length;
+      averageSalariesByEmploymentType[employmentType] = averageSalaryForCountry;
+    }
+    averageSalariesByEmploymentType = sortBySalary(averageSalariesByEmploymentType);
+    return averageSalariesByEmploymentType;
+    }
+
   Future<Map<String, double>> getSalariesByCompanySize() async {
     if (!_jobsLoaded) {
       await initJobs();
