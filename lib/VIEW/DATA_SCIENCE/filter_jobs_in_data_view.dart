@@ -14,7 +14,7 @@ class _FilterJobsInDataViewState extends State<FilterJobsInDataView> {
   List<double> _currentSalaries = [];
   Map<String, double> _currentData = {};
   final List<String> _filterOptions = ['Countries', 'Company Size'];
-  final String currentFilter = 'Countries';
+  String currentFilter = 'Countries';
 
   late FilterJobsInDataPresenter _presenter;
 
@@ -40,23 +40,32 @@ class _FilterJobsInDataViewState extends State<FilterJobsInDataView> {
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
-              DropdownButton<String>(
-                value: currentFilter,
-                onChanged: (String? newValue) {
-                  if (newValue == 'Countries') {
-                    _presenter.filterByCountry();
-                  }
-                  if (newValue == 'Company Size') {
-                    _presenter.filterByCompanySize();
-                  }
-                },
-                items: _filterOptions
-                    .map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text("Filter by:"),
+                  SizedBox(width: 12),
+                  DropdownButton<String>(
+                    value: currentFilter,
+                    onChanged: (String? newValue) {
+                      if (newValue == 'Countries') {
+                        _presenter.filterByCountry();
+                        currentFilter = 'Countries';
+                      }
+                      if (newValue == 'Company Size') {
+                        _presenter.filterByCompanySize();
+                        currentFilter = 'Company Size';
+                      }
+                    },
+                    items: _filterOptions
+                        .map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                  ),
+                ],
               ),
               Expanded(
                 child: ListView.builder(

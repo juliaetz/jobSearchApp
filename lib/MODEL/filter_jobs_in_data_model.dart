@@ -32,6 +32,7 @@ class FilterJobsInDataModel {
       double averageSalaryForCountry = totalSalary / salariesByCountry[country]!.length;
       averageSalariesByCountry[country] = averageSalaryForCountry;
     }
+    averageSalariesByCountry = sortBySalary(averageSalariesByCountry);
     return averageSalariesByCountry;
   }
 
@@ -55,6 +56,21 @@ class FilterJobsInDataModel {
       double averageSalaryForCountry = totalSalary / salariesByCompanySize[companySize]!.length;
       averageSalariesByCompanySize[companySize] = averageSalaryForCountry;
     }
+    Map<String, String> companySizeMap = {
+      "S": "Small",
+      "M": "Medium",
+      "L": "Large",
+    };
+    averageSalariesByCompanySize = Map.fromEntries(
+        averageSalariesByCompanySize.entries
+            .map((e) => MapEntry(companySizeMap[e.key] ?? e.key, e.value)));
+
+    averageSalariesByCompanySize = sortBySalary(averageSalariesByCompanySize);
     return averageSalariesByCompanySize;
+  }
+
+  Map<String, double> sortBySalary(Map<String, double> itemsAndSalaries) {
+    return Map.fromEntries(itemsAndSalaries.entries.toList()
+      ..sort((e1, e2) => e2.value.compareTo(e1.value)));
   }
 }
