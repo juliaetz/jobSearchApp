@@ -17,7 +17,8 @@ class SoftwareJobsPresenter{
   }
 
   Future<Map<int,bool>> setMaps() async {
-    await _viewModel.jobsDatabaseReference.get().then((results){
+    CollectionReference jobsDatabaseRef = await _viewModel.getJobsDatabaseReference();
+    await jobsDatabaseRef.get().then((results){
       for(DocumentSnapshot docs in results.docs){
         if(docs["Job_Type"] == "Software Engineering") {
           _viewModel.favoritedData[docs.get("Index")] = true;
@@ -32,9 +33,9 @@ class SoftwareJobsPresenter{
 
   Future<Map<int, bool>> updateFavoriteData(int index, Job data) async {
     updateBool(index);
-
+    CollectionReference jobsDatabaseRef = await _viewModel.getJobsDatabaseReference();
     if(_viewModel.favoritedData[index] == true){
-      _viewModel.jobsDatabaseReference.doc().set(
+      jobsDatabaseRef.doc().set(
           {
             "Location": data.location,
             "Job_Title": data.title,
@@ -45,7 +46,7 @@ class SoftwareJobsPresenter{
           });
     } else {
       DocumentSnapshot? currDoc;
-      await _viewModel.jobsDatabaseReference.get().then((results){
+      await jobsDatabaseRef.get().then((results){
         for(DocumentSnapshot docs in results.docs){
           if(docs.get("Index") == index && docs.get("Job_Type") == "Software Engineering"){
             currDoc = docs;
@@ -53,7 +54,7 @@ class SoftwareJobsPresenter{
         }
       });
       String? id = currDoc?.id;
-      _viewModel.jobsDatabaseReference.doc(id).delete();
+      jobsDatabaseRef.doc(id).delete();
 
     }
 

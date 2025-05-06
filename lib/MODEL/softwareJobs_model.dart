@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'data_read.dart';
-//import 'package:stress_managment_app/account_firebase_logic.dart';
+import '../account_firebase_logic.dart';
 
 class SoftwareJobsModel{
   int _pageIndex = 0;
-  CollectionReference jobsDatabaseReference = FirebaseFirestore.instance.collection('Favorite_Jobs');
+  //CollectionReference jobsDatabaseReference = FirebaseFirestore.instance.collection('Favorite_Jobs');
   Map<int,bool> favoritedData = <int,bool>{};
 
 
@@ -21,6 +21,10 @@ class SoftwareJobsModel{
     favoritesDatabaseReference = userDocRef.collection('Favorite_Ideas');
     eventsDatabaseReference = userDocRef.collection('events');
   }*/
+  Future<CollectionReference> getJobsDatabaseReference() async {
+    final userDocRef = await getUserDocument();
+    return userDocRef.collection('Favorite_Jobs');
+  }
   SoftwareJobsModel();
 //initializeFavIdeasDatabaseRef();
 }
