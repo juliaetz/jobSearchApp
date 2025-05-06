@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:final_project/account_firebase_logic.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({Key? key}) : super(key: key);
@@ -94,6 +97,55 @@ class _SignInScreenState extends State<SignInScreen> {
     }
   }
 
+  Future<void> _signInWithGoogle() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      final GoogleSignInAccount? googleUser = await GoogleSignIn(scopes: ['email', 'profile']).signIn();
+      if (googleUser == null) {
+        setState(() {
+          _isLoading = false;
+        });
+        return;
+      }
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
+
+      final OAuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      await FirebaseAuth.instance.signInWithCredential(credential);
+      Navigator.of(context).pushNamedAndRemoveUntil(
+        '/home',
+            (Route<dynamic> route) => false,
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to sign in with Google: $e')),
+      );
+    } finally {
+      final userCollection = FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser!.uid);
+      final docSnapshot = await userCollection.get();
+      if (!docSnapshot.exists) {
+        await createUserDocument(FirebaseAuth.instance.currentUser!);
+      }
+        DocumentReference userDocRef = await getUserDocument();
+        await userDocRef.update({
+          'User_Email': FirebaseAuth.instance.currentUser!.email,
+          'First_Name': FirebaseAuth.instance.currentUser!.displayName
+              ?.split(' ')[0]
+              .toString(),
+          'Last_Name': FirebaseAuth.instance.currentUser!.displayName
+              ?.split(' ')[1]
+              .toString(),
+        });
+      setState(() {_isLoading = false;});
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -129,7 +181,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   child: Container(
                     padding: const EdgeInsets.all(25),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: Theme.of(context).colorScheme.surfaceContainer,
                       borderRadius: BorderRadius.circular(10.0),
                     ),
                     child: Scrollbar(
@@ -227,6 +279,20 @@ class _SignInScreenState extends State<SignInScreen> {
                                   ElevatedButton(
                                     onPressed: _signInWithEmailAndPassword,
                                     child: const Text('Sign In'),
+                                  ),
+                                  const SizedBox(height: 10),
+                                  Text('Or'),
+                                  const SizedBox(height: 10),
+                                  ElevatedButton(
+                                    onPressed: _signInWithGoogle,
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Image.asset('assets/google_icon.png', height: 24), // Google logo asset
+                                        const SizedBox(width: 10),
+                                        const Text(' Sign In with Google'),
+                                      ],
+                                  ),
                                   ),
 
                                 ],
