@@ -10,7 +10,7 @@ class GraphJobsInData extends StatelessWidget{
     int x = 0;
     int numberOfBars = 0;
     data.forEach((key, value) {
-      if (numberOfBars < 7) {
+      if (numberOfBars < 6) {
       barGroups.add(
         BarChartGroupData(
           x: x,
@@ -71,6 +71,13 @@ class GraphJobsInData extends StatelessWidget{
             topTitles: AxisTitles(
               sideTitles: SideTitles(
                 showTitles: false
+              ),
+            ),
+            leftTitles: AxisTitles(
+              sideTitles: SideTitles(
+                showTitles: true,
+                reservedSize: 45,
+                maxIncluded: false,
               ),
             ),
         ),
