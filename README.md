@@ -1,16 +1,12 @@
-# final_project
+CS 3541 Spring Group Project Final. This project was developed with the help of Benjamin Ponto, Andrew Martini, Angela Danger, and Cody Olson.
 
-A new Flutter project.
 
-## Getting Started
+Searching for jobs can be stressful, which is why our app "Unemployed?" is designed to make the process easier. From the career database, users can search and filter by name, locatation, work setting, and salary. Within the app, users may also "favorite" listings they are interested in, schedule interviews in a calender, view interview resources, and set short- and long-term career goals. Personal contributions include the favoriting feature and Job Information page.
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Skills Exercised
+- Communicating and collaborating within a team
+- Solving problems through teamwork
+- Organizing the app within an MVP architecture
+- Managing data
+- Working efficiently to meet tight project deadlines
